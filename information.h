@@ -369,7 +369,7 @@ void output_csv(struct student **head_ref, char *filename) {
                 "引体向上/仰卧起坐,1000m跑/800m跑,总成绩\n");
   struct student *current = *head_ref;
   while (current != NULL) {
-    fprintf(file, "%s,%d,%s,%s,%d,%d,%s,%d,%d,%d,%d,%d,%d,%d\n", current->name,
+    fprintf(file, "%s,%ld,%s,%s,%d,%d,%s,%d,%d,%d,%d,%d,%d,%d\n", current->name,
             current->school_number, current->class_name, current->grade,
             current->height, current->weight, current->sex,
             current->project_score[0], current->project_score[1],

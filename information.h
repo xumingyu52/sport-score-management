@@ -9,11 +9,11 @@
 
 struct student {
   char name[20];
-  long int school_number;
+  char school_number[20];
   char class_name[20];
   char grade[20];
-  int height;
-  int weight;
+  float height;
+  float weight;
   char sex[10];
   // 体测项目
   char project_name[PROJECT_COUNT][20];
@@ -36,9 +36,9 @@ struct student {
  * @param total_score 总成绩
  * @return struct student* 返回创建的节点指针
  */
-struct student *create_student_node(char *name, long int school_number,
-                                    char *class_name, char *grade, int height,
-                                    int weight, char *sex, int *project_score,
+struct student *create_student_node(char *name, char *school_number,
+                                    char *class_name, char *grade, float height,
+                                    float weight, char *sex, int *project_score,
                                     int total_score) {
   struct student *head = (struct student *)malloc(sizeof(struct student));
   if (head == NULL) {
@@ -46,7 +46,7 @@ struct student *create_student_node(char *name, long int school_number,
     return NULL;
   }
   strcpy(head->name, name);
-  head->school_number = school_number;
+  strcpy(head->school_number, school_number);
   strcpy(head->class_name, class_name);
   strcpy(head->grade, grade);
   head->height = height;
@@ -263,19 +263,15 @@ void modify_student_info(struct student **head_ref, char *name, int info_index,
   struct student *current = *head_ref;
   while (current != NULL) {
     if (strcmp(current->name, name) == 0) {
-      if (info_index == 1) {
+            if (info_index == 1) {
         strcpy(current->name, new_info); // 姓名
       } else if (info_index == 2) {
-        current->school_number = atoi(new_info); // 学号
+        strcpy(current->school_number, new_info); // 学号
       } else if (info_index == 3) {
         strcpy(current->class_name, new_info); // 班级
       } else if (info_index == 4) {
         strcpy(current->grade, new_info); // 年级
       } else if (info_index == 5) {
-        current->height = atoi(new_info); // 身高
-      } else if (info_index == 6) {
-        current->weight = atoi(new_info); // 体重
-      } else if (info_index == 7) {
         strcpy(current->sex, new_info); // 性别
         // --- 修复：修改性别后同步更新项目名称 ---
         if (strcmp(current->sex, "男") == 0) {
@@ -289,8 +285,12 @@ void modify_student_info(struct student **head_ref, char *name, int info_index,
           for (int i = 0; i < PROJECT_COUNT; i++)
             strcpy(current->project_name[i], f_names[i]);
         }
+      } else if (info_index == 6) {
+        current->height = atof(new_info); // 身高
+      } else if (info_index == 7) {
+        current->weight = atof(new_info); // 体重
       } else if (info_index >= 8 && info_index < 8 + PROJECT_COUNT) {
-        current->project_score[info_index - 8] = atoi(new_info); // 项目成绩
+        current->project_score[info_index - 8] = atoi(new_info); // 各科目成绩
       } else if (info_index == 8 + PROJECT_COUNT) {
         current->total_score = atoi(new_info); // 总成绩
       }
@@ -369,7 +369,7 @@ void output_csv(struct student **head_ref, char *filename) {
                 "引体向上/仰卧起坐,1000m跑/800m跑,总成绩\n");
   struct student *current = *head_ref;
   while (current != NULL) {
-    fprintf(file, "%s,%ld,%s,%s,%d,%d,%s,%d,%d,%d,%d,%d,%d,%d\n", current->name,
+    fprintf(file, "%s,%s,%s,%s,%.1f,%.1f,%s,%d,%d,%d,%d,%d,%d,%d\n", current->name,
             current->school_number, current->class_name, current->grade,
             current->height, current->weight, current->sex,
             current->project_score[0], current->project_score[1],
@@ -424,14 +424,15 @@ int import_from_custom_txt(struct student **head_ref, char *filename) {
 
   // 临时变量用于存放解析出的数据
   char name[20], sex[10], grade[20], class_name[20];
-  int id, height, weight;
+  char id[20];
+  float height, weight;
   int scores[6]; // BMI, 肺活量, 50m, 立定跳, 引体/仰卧, 1000/800
   int total_score;
 
   while (fgets(line, sizeof(line), file)) {
     // 1. 寻找学号（标识新学生的开始）
     if (strstr(line, "学号：")) {
-      sscanf(strstr(line, "：") + 3, "%d", &id); // 跳过“：”读取数字
+      sscanf(strstr(line, "：") + 3, "%s", id); // 跳过“：”读取数字
 
       // 2. 连续读取接下来的行
       while (fgets(line, sizeof(line), file) && !strstr(line, "————————")) {
@@ -448,11 +449,11 @@ int import_from_custom_txt(struct student **head_ref, char *filename) {
         else if (strstr(line, "身高：")) {
           float h;
           sscanf(strstr(line, "：") + strlen("："), "%f", &h);
-          height = (int)h;
+          height = h;
         } else if (strstr(line, "体重：")) {
           float w;
           sscanf(strstr(line, "：") + strlen("："), "%f", &w);
-          weight = (int)w;
+          weight = w;
         }
 
         // 3. 提取各个科目成绩（寻找关键词并定位“分”字前面的数字）

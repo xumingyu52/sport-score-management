@@ -29,9 +29,9 @@ int gong11(struct student **tou1); // 11.保存数据
 int main() {
     // 检测文件
     struct student *tou1 = NULL;
+    tou1 = load_student_list_from_file("students.dat");
     int xuanze;
-    while (1) {
-        tou1 = load_student_list_from_file("students.dat");
+    while (1) {    
         system("cls");
         if (tou1 == NULL) {
             printf("系统自检：未检测到已存储的学生信息\n");
@@ -125,16 +125,17 @@ int gong1(struct student **tou1) { // 1.录入学生信息
     } else if (xuanze == 2) {
         //逐个导入学生数据
         char xingming[20], xingbie[5], banji[10], nianji[10];
-        long int xuehao;
-        int shengao, tizhong, zongfen, chengji[6];
+        char xuehao[20];
+        float shengao, tizhong;
+        int zongfen, chengji[6];
         printf("请输入您想录入的学生姓名, 输入0退出: ");
         scanf("%s", xingming);
         if (strcmp(xingming, "0") == 0) return 0;
-        printf("学号: "); scanf("%ld", &xuehao);
+        printf("学号: "); scanf("%s", xuehao);
         printf("班级: "); scanf("%s", banji);
         printf("年级: "); scanf("%s", nianji);
-        printf("身高: "); scanf("%d", &shengao);
-        printf("体重: "); scanf("%d", &tizhong);
+        printf("身高: "); scanf("%f", &shengao);
+        printf("体重: "); scanf("%f", &tizhong);
         printf("性别: "); scanf("%s", xingbie);
         printf("总分: "); scanf("%d", &zongfen);
         printf("BMI: "); scanf("%d", &chengji[0]);
@@ -178,7 +179,7 @@ int gong3(struct student **tou1) { // 3.查询学生信息
     struct student *res = search_student_list(tou1, xingming);
     if (res) {
         //将信息全部输出
-        printf("姓名: %s\n 学号: %ld\n 班级: %s\n 年级: %s\n 身高: %d\n 体重: %d\n 性别: %s\n BMI: %d\n 肺活量: %d\n 50m跑: %d\n 立定跳远: %d\n 引体向上: %d\n 1000m跑: %d\n 总分: %d\n", 
+        printf("姓名: %s\n 学号: %s\n 班级: %s\n 年级: %s\n 身高: %.1f\n 体重: %.1f\n 性别: %s\n BMI: %d\n 肺活量: %d\n 50m跑: %d\n 立定跳远: %d\n 引体向上: %d\n 1000m跑: %d\n 总分: %d\n", 
     res->name, res->school_number, res->class_name, res->grade, res->height, res->weight, res->sex, res->project_score[0], res->project_score[1], res->project_score[2], res->project_score[3], res->project_score[4], res->project_score[5], res->total_score);
     } else {
         printf("未找到该学生\n");
@@ -193,7 +194,7 @@ void gong4(struct student **head) { // 4.显示学生信息
     struct student *curr = *head;
     printf("姓名\t学号\t班级\t年级\t性别\tBMI\t肺活量\t50m跑\t立定跳远\t引体向上\t1000m跑\t总分\n");
     while (curr) {
-        printf("%s\t%ld\t%s\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", curr->name, curr->school_number, 
+        printf("%s\t%s\t%s\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", curr->name, curr->school_number, 
         curr->class_name, curr->grade, curr->sex, curr->project_score[0], curr->project_score[1], curr->project_score[2], 
         curr->project_score[3], curr->project_score[4], curr->project_score[5], curr->total_score);
         curr = curr->next;

@@ -3,34 +3,37 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct student *tou1 = NULL;
+
 
 int xitong();
 int xitong_xiao();
 void zijian();
-int gong1(); // 1.录入学生信息
-int gong2(); // 2.删除学生
-int gong3(); // 3.查询学生信息
+int gong1(struct student *tou1); // 1.录入学生信息
+int gong2(struct student *tou1); // 2.删除学生
+int gong3(struct student *tou1); // 3.查询学生信息
 void gong4(struct student **head); // 4.显示学生信息
-int gong5(); // 5.修改学生信息
-int gong8(); // 8.按总分排序
-int gong9(); // 9.按单项科目排序
-int gong10(); // 10.将数据输出为csv文件
-int gong11(); // 11.保存数据
+int gong5(struct student *tou1); // 5.修改学生信息
+int gong8(struct student *tou1); // 8.按总分排序
+int gong9(struct student *tou1); // 9.按单项科目排序
+int gong10(struct student *tou1); // 10.将数据输出为csv文件
+int gong11(struct student *tou1); // 11.保存数据
+
+//int main() {
+//    int chengji[7] = {81, 82, 83, 84, 85, 86};
+//    struct student *zhangsan = create_student_node(
+//        "张三", 31230, "信管4252", "2025级", 170, 66, "男", chengji, 58);
+//    insert_student_list_tail(&tou1, zhangsan);
+//    zijian();
+//    return 0;
+//}
 
 int main() {
-    int chengji[7] = {81, 82, 83, 84, 85, 86};
-    struct student *zhangsan = create_student_node(
-        "张三", 31230, "信管4252", "2025级", 170, 66, "男", chengji, 58);
-    insert_student_list_tail(&tou1, zhangsan);
-    zijian();
-    return 0;
-}
-
-void zijian() {
+    // 检测文件
+    struct student *tou1 = NULL;
+    tou1 = load_student_list_from_file("students.dat");
     int xuanze;
     while (1) {
-        system("clear");
+        system("cls");
         if (tou1 == NULL) {
             printf("系统自检：未检测到已存储的学生信息\n");
             printf("请确保文件在程序所在文件夹中\n");
@@ -47,23 +50,23 @@ void zijian() {
             delete_student_list(&tou1);
             break;
         } else if (xuanze == 1) {
-            gong1();
+            gong1(tou1);
         } else if (xuanze == 2) {
-            gong2();
+            gong2(tou1);
         } else if (xuanze == 3) {
-            gong3();
+            gong3(tou1);
         } else if (xuanze == 4) {
             gong4(&tou1);
         } else if (xuanze == 5) {
-            gong5();
+            gong5(tou1);
         } else if (xuanze == 8) {
-            gong8();
+            gong8(tou1);
         } else if (xuanze == 9) {
-            gong9();
+            gong9(tou1);
         } else if (xuanze == 10) {
-            gong10();
+            gong10(tou1);
         } else if (xuanze == 11) {
-            gong11();
+            gong11(tou1);
         } else {
             printf("输入的指令无效\n");
         }
@@ -100,7 +103,7 @@ int xitong() {
     return xuanze;
 }
 
-int gong1() { // 1.录入学生信息
+int gong1(struct student *tou1) { // 1.录入学生信息
     printf("请选择你需要的导入方式\n");
     printf("1.从txt中批量导入\n");
     printf("2.逐个导入\n");
@@ -148,7 +151,7 @@ int gong1() { // 1.录入学生信息
     }
 }
 
-int gong2() { // 2.删除学生信息
+int gong2(struct student *tou1) { // 2.删除学生信息
     char xingming[20];
     printf("请输入您想删除的学生姓名: ");
     scanf("%s", xingming);
@@ -165,7 +168,7 @@ int gong2() { // 2.删除学生信息
     return 0;
 }
 
-int gong3() { // 3.查询学生信息
+int gong3(struct student *tou1) { // 3.查询学生信息
     char xingming[20];
     printf("请输入查询姓名: ");
     scanf("%s", xingming);
@@ -192,7 +195,7 @@ void gong4(struct student **head) { // 4.显示学生信息
     }
 }
 
-int gong5() { // 5.修改学生成绩
+int gong5(struct student *tou1) { // 5.修改学生成绩
     char xingming[20], xin[20];
     int haoma;
     printf("请输入姓名: "); scanf("%s", xingming);
@@ -203,7 +206,7 @@ int gong5() { // 5.修改学生成绩
     return 0;
 }
 
-int gong8() { // 8.按总分排序
+int gong8(struct student *tou1) { // 8.按总分排序
     printf("排序结果不会保存。\n");
     struct student *fuzhi = copy_student_list(tou1);
     sort_student_list(&fuzhi, 1, 0);
@@ -213,7 +216,7 @@ int gong8() { // 8.按总分排序
     return 0;
 }
 
-int gong9() { // 9.按单项科目排序
+int gong9(struct student *tou1) { // 9.按单项科目排序
     int kemu;
     printf("排序结果不会保存。\n");
     printf("输入科目编号(1-6): ");
@@ -226,13 +229,13 @@ int gong9() { // 9.按单项科目排序
     return 0;
 }
 
-int gong10() { // 10.将数据输出为csv文件
+int gong10(struct student *tou1) { // 10.将数据输出为csv文件
     output_csv(&tou1, "学生成绩.csv");
     printf("输出成功！数据保存在学生成绩.csv文件中\n");
     return 0;
 }
 
-int gong11() { // 11.保存数据
+int gong11(struct student *tou1) { // 11.保存数据
     save_student_list_to_file(&tou1, "students.dat");
     printf("保存成功！数据保存在students.dat文件中\n");
     return 0;

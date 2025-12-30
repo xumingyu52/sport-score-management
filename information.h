@@ -15,26 +15,26 @@ struct student {
   int height;
   int weight;
   char sex[10];
-  // ä½“æµ‹é¡¹ç›®
+  // Ìå²âÏîÄ¿
   char project_name[PROJECT_COUNT][20];
   int project_score[PROJECT_COUNT];
   int total_score;
-  // é“¾è¡¨æ„å»º
+  // Á´±í¹¹½¨
   struct student *next;
 };
 
 /**
- * @brief åˆ›å»ºé“¾è¡¨èŠ‚ç‚¹
- * @param name  å­¦ç”Ÿå§“å
- * @param school_number å­¦å·
- * @param class_name ç­çº§
- * @param grade å¹´çº§
- * @param height èº«é«˜
- * @param weight ä½“é‡
- * @param sex æ€§åˆ«
- * @param project_score ä½“æµ‹é¡¹ç›®æˆç»© 7ä¸ª
- * @param total_score æ€»æˆç»©
- * @return struct student* è¿”å›åˆ›å»ºçš„èŠ‚ç‚¹æŒ‡é’ˆ
+ * @brief ´´½¨Á´±í½Úµã
+ * @param name  Ñ§ÉúĞÕÃû
+ * @param school_number Ñ§ºÅ
+ * @param class_name °à¼¶
+ * @param grade Äê¼¶
+ * @param height Éí¸ß
+ * @param weight ÌåÖØ
+ * @param sex ĞÔ±ğ
+ * @param project_score Ìå²âÏîÄ¿³É¼¨ 7¸ö
+ * @param total_score ×Ü³É¼¨
+ * @return struct student* ·µ»Ø´´½¨µÄ½ÚµãÖ¸Õë
  */
 struct student *create_student_node(char *name, long int school_number,
                                     char *class_name, char *grade, int height,
@@ -42,7 +42,7 @@ struct student *create_student_node(char *name, long int school_number,
                                     int total_score) {
   struct student *head = (struct student *)malloc(sizeof(struct student));
   if (head == NULL) {
-    printf("å†…å­˜åˆ†é…å¤±è´¥ï¼\n");
+    printf("ÄÚ´æ·ÖÅäÊ§°Ü£¡\n");
     return NULL;
   }
   strcpy(head->name, name);
@@ -56,31 +56,31 @@ struct student *create_student_node(char *name, long int school_number,
     head->project_score[i] = project_score[i];
   }
 
-  // åˆå§‹åŒ–æ€»åˆ†
+  // ³õÊ¼»¯×Ü·Ö
   head->total_score = total_score;
 
-  if (strcmp(sex, "ç”·") == 0) {
-    const char *m_names[PROJECT_COUNT] = {"BMI",      "è‚ºæ´»é‡",   "50mè·‘",
-                                          "ç«‹å®šè·³è¿œ", "å¼•ä½“å‘ä¸Š", "1000mè·‘"};
+  if (strcmp(sex, "ÄĞ") == 0) {
+    const char *m_names[PROJECT_COUNT] = {"BMI",      "·Î»îÁ¿",   "50mÅÜ",
+                                          "Á¢¶¨ÌøÔ¶", "ÒıÌåÏòÉÏ", "1000mÅÜ"};
     for (int i = 0; i < PROJECT_COUNT; i++)
       strcpy(head->project_name[i], m_names[i]);
   } else {
-    const char *f_names[PROJECT_COUNT] = {"BMI",      "è‚ºæ´»é‡",   "50mè·‘",
-                                          "ç«‹å®šè·³è¿œ", "ä»°å§èµ·å", "800mè·‘"};
+    const char *f_names[PROJECT_COUNT] = {"BMI",      "·Î»îÁ¿",   "50mÅÜ",
+                                          "Á¢¶¨ÌøÔ¶", "ÑöÎÔÆğ×ø", "800mÅÜ"};
     for (int i = 0; i < PROJECT_COUNT; i++)
       strcpy(head->project_name[i], f_names[i]);
   }
 
-  // é“¾è¡¨éƒ¨ä»½
+  // Á´±í²¿·İ
   head->next = NULL;
   return head;
 }
 
 /**
- * @brief é“¾è¡¨å°¾æ’
+ * @brief Á´±íÎ²²å
  *
- * @param head_ref é“¾è¡¨å¤´æŒ‡é’ˆ
- * @param new_node æ–°èŠ‚ç‚¹
+ * @param head_ref Á´±íÍ·Ö¸Õë
+ * @param new_node ĞÂ½Úµã
  */
 void insert_student_list_tail(struct student **head_ref,
                               struct student *new_node) {
@@ -96,10 +96,10 @@ void insert_student_list_tail(struct student **head_ref,
 }
 
 /**
- * @brief é“¾è¡¨å¤´æ’
+ * @brief Á´±íÍ·²å
  *
- * @param head_ref é“¾è¡¨å¤´æŒ‡é’ˆ
- * @param new_node æ–°èŠ‚ç‚¹
+ * @param head_ref Á´±íÍ·Ö¸Õë
+ * @param new_node ĞÂ½Úµã
  */
 void insert_student_list_head(struct student **head_ref,
                               struct student *new_node) {
@@ -112,11 +112,11 @@ void insert_student_list_head(struct student **head_ref,
 }
 
 /**
- * @brief åœ¨é“¾è¡¨ä¸­æ’å…¥
+ * @brief ÔÚÁ´±íÖĞ²åÈë
  *
- * @param head_ref é“¾è¡¨å¤´æŒ‡é’ˆ
- * @param new_node æ–°èŠ‚ç‚¹
- * @param position æ’å…¥ä½ç½®  ç¬¬nä¸ªå­¦ç”Ÿçš„åé¢æ’å…¥
+ * @param head_ref Á´±íÍ·Ö¸Õë
+ * @param new_node ĞÂ½Úµã
+ * @param position ²åÈëÎ»ÖÃ  µÚn¸öÑ§ÉúµÄºóÃæ²åÈë
  */
 void insert_student_list(struct student **head_ref, struct student *new_node,
                          int position) {
@@ -133,10 +133,10 @@ void insert_student_list(struct student **head_ref, struct student *new_node,
 }
 
 /**
- * @brief é“¾è¡¨ä¸­ä»»æ„èŠ‚ç‚¹åˆ é™¤
+ * @brief Á´±íÖĞÈÎÒâ½ÚµãÉ¾³ı
  *
- * @param head_ref é“¾è¡¨å¤´æŒ‡é’ˆ
- * @param position åˆ é™¤ä½ç½®  ç¬¬nä¸ªå­¦ç”Ÿè¢«åˆ é™¤
+ * @param head_ref Á´±íÍ·Ö¸Õë
+ * @param position É¾³ıÎ»ÖÃ  µÚn¸öÑ§Éú±»É¾³ı
  */
 void delete_student_list_node(struct student **head_ref, int position) {
   if (*head_ref == NULL || position < 1) {
@@ -161,8 +161,8 @@ void delete_student_list_node(struct student **head_ref, int position) {
 }
 
 /**
- * @brief é“¾è¡¨æ¸…ç©º
- * @param head_ref é“¾è¡¨å¤´æŒ‡é’ˆ
+ * @brief Á´±íÇå¿Õ
+ * @param head_ref Á´±íÍ·Ö¸Õë
  */
 void delete_student_list(struct student **head_ref) {
   struct student *current = *head_ref;
@@ -176,11 +176,11 @@ void delete_student_list(struct student **head_ref) {
 }
 
 /**
- * @brief é“¾è¡¨æŸ¥æ‰¾
+ * @brief Á´±í²éÕÒ
  *
- * @param head_ref é“¾è¡¨å¤´æŒ‡é’ˆ
- * @param name å­¦ç”Ÿå§“å
- * @return struct student* è¿”å›æ‰¾åˆ°çš„èŠ‚ç‚¹æŒ‡é’ˆ
+ * @param head_ref Á´±íÍ·Ö¸Õë
+ * @param name Ñ§ÉúĞÕÃû
+ * @return struct student* ·µ»ØÕÒµ½µÄ½ÚµãÖ¸Õë
  */
 struct student *search_student_list(struct student **head_ref, char *name) {
   struct student *current = *head_ref;
@@ -194,15 +194,15 @@ struct student *search_student_list(struct student **head_ref, char *name) {
 }
 
 /**
- * @brief é“¾è¡¨æ’åº
- * @param head_ref é“¾è¡¨å¤´æŒ‡é’ˆ
- * @param sort_type æ’åºç±»å‹  1:æŒ‰æ€»æˆç»©æ’åº  2:æŒ‰å•ç§‘æˆç»©æ’åºï¼ˆè¾“å…¥ç¬¬å‡ ä¸ªç§‘ç›®ï¼‰
- * 3:æŒ‰ä½“é‡æ’åº
- * @param sort_index æ’åºç§‘ç›®
+ * @brief Á´±íÅÅĞò
+ * @param head_ref Á´±íÍ·Ö¸Õë
+ * @param sort_type ÅÅĞòÀàĞÍ  1:°´×Ü³É¼¨ÅÅĞò  2:°´µ¥¿Æ³É¼¨ÅÅĞò£¨ÊäÈëµÚ¼¸¸ö¿ÆÄ¿£©
+ * 3:°´ÌåÖØÅÅĞò
+ * @param sort_index ÅÅĞò¿ÆÄ¿
  */
 void sort_student_list(struct student **head_ref, int sort_type,
                        int sort_index) {
-  // å¦‚æœé“¾è¡¨ä¸ºç©ºæˆ–åªæœ‰ä¸€ä¸ªèŠ‚ç‚¹ï¼Œæ— éœ€æ’åº
+  // Èç¹ûÁ´±íÎª¿Õ»òÖ»ÓĞÒ»¸ö½Úµã£¬ÎŞĞèÅÅĞò
   if (*head_ref == NULL || (*head_ref)->next == NULL) {
     return;
   }
@@ -213,15 +213,15 @@ void sort_student_list(struct student **head_ref, int sort_type,
 
   do {
     swapped = 0;
-    curr_ptr_ref = head_ref; // ä»å¤´æŒ‡é’ˆçš„åœ°å€å¼€å§‹éå†
+    curr_ptr_ref = head_ref; // ´ÓÍ·Ö¸ÕëµÄµØÖ·¿ªÊ¼±éÀú
 
-    // éå†æ•´ä¸ªé“¾è¡¨è¿›è¡Œå†’æ³¡æ’åº
+    // ±éÀúÕû¸öÁ´±í½øĞĞÃ°ÅİÅÅĞò
     while ((*curr_ptr_ref)->next != NULL) {
-      p1 = *curr_ptr_ref; // å½“å‰èŠ‚ç‚¹
-      p2 = p1->next;      // ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
+      p1 = *curr_ptr_ref; // µ±Ç°½Úµã
+      p2 = p1->next;      // ÏÂÒ»¸ö½Úµã
 
       int should_swap = 0;
-      // æ’åºé€»è¾‘ï¼ˆé™åºæ’åˆ—ï¼šæˆç»©å¤§çš„åœ¨å‰ï¼‰
+      // ÅÅĞòÂß¼­£¨½µĞòÅÅÁĞ£º³É¼¨´óµÄÔÚÇ°£©
       if (sort_type == 1) {
         if (p1->total_score < p2->total_score)
           should_swap = 1;
@@ -235,28 +235,28 @@ void sort_student_list(struct student **head_ref, int sort_type,
       }
 
       if (should_swap) {
-        /* æ ¸å¿ƒé€»è¾‘ï¼šäº¤æ¢èŠ‚ç‚¹çš„é“¾æ¥ */
-        p1->next = p2->next; // 1. è®© p1 æŒ‡å‘ p2 ä¹‹åçš„èŠ‚ç‚¹
-        p2->next = p1;       // 2. è®© p2 æŒ‡å‘ p1
-        *curr_ptr_ref = p2;  // 3. è®©â€œæŒ‡å‘ p1 çš„é‚£ä¸ªæŒ‡é’ˆâ€æ”¹ä¸ºæŒ‡å‘ p2
+        /* ºËĞÄÂß¼­£º½»»»½ÚµãµÄÁ´½Ó */
+        p1->next = p2->next; // 1. ÈÃ p1 Ö¸Ïò p2 Ö®ºóµÄ½Úµã
+        p2->next = p1;       // 2. ÈÃ p2 Ö¸Ïò p1
+        *curr_ptr_ref = p2;  // 3. ÈÃ¡°Ö¸Ïò p1 µÄÄÇ¸öÖ¸Õë¡±¸ÄÎªÖ¸Ïò p2
 
         swapped = 1;
       }
 
-      /* ç§»åŠ¨åˆ°ä¸‹ä¸€ä¸ªä½ç½® */
-      // æ— è®ºæ˜¯å¦äº¤æ¢ï¼Œä¸‹ä¸€æ¬¡æˆ‘ä»¬è¦æ£€æŸ¥çš„éƒ½æ˜¯â€œå½“å‰è¿™ä¸ªä½ç½®çš„ä¸‹ä¸€ä¸ªâ€
+      /* ÒÆ¶¯µ½ÏÂÒ»¸öÎ»ÖÃ */
+      // ÎŞÂÛÊÇ·ñ½»»»£¬ÏÂÒ»´ÎÎÒÃÇÒª¼ì²éµÄ¶¼ÊÇ¡°µ±Ç°Õâ¸öÎ»ÖÃµÄÏÂÒ»¸ö¡±
       curr_ptr_ref = &((*curr_ptr_ref)->next);
     }
-  } while (swapped); // å¦‚æœä¸€è½®éå†æ²¡æœ‰å‘ç”Ÿäº¤æ¢ï¼Œè¯´æ˜æ’åºå®Œæˆ
+  } while (swapped); // Èç¹ûÒ»ÂÖ±éÀúÃ»ÓĞ·¢Éú½»»»£¬ËµÃ÷ÅÅĞòÍê³É
 }
 
 /**
- * @brief ä¸ªäººä¿¡æ¯ä¿®æ”¹
+ * @brief ¸öÈËĞÅÏ¢ĞŞ¸Ä
  *
- * @param head_ref é“¾è¡¨å¤´æŒ‡é’ˆ
- * @param name å­¦ç”Ÿå§“å
- * @param info_index éœ€è¦ä¿®æ”¹çš„ä¿¡æ¯çš„ç¼–å·
- * @param new_info æ–°çš„ä¿¡æ¯(ä¼ å…¥å­—ç¬¦ä¸²)
+ * @param head_ref Á´±íÍ·Ö¸Õë
+ * @param name Ñ§ÉúĞÕÃû
+ * @param info_index ĞèÒªĞŞ¸ÄµÄĞÅÏ¢µÄ±àºÅ
+ * @param new_info ĞÂµÄĞÅÏ¢(´«Èë×Ö·û´®)
  */
 void modify_student_info(struct student **head_ref, char *name, int info_index,
                          char *new_info) {
@@ -264,35 +264,35 @@ void modify_student_info(struct student **head_ref, char *name, int info_index,
   while (current != NULL) {
     if (strcmp(current->name, name) == 0) {
       if (info_index == 1) {
-        strcpy(current->name, new_info); // å§“å
+        strcpy(current->name, new_info); // ĞÕÃû
       } else if (info_index == 2) {
-        current->school_number = atoi(new_info); // å­¦å·
+        current->school_number = atoi(new_info); // Ñ§ºÅ
       } else if (info_index == 3) {
-        strcpy(current->class_name, new_info); // ç­çº§
+        strcpy(current->class_name, new_info); // °à¼¶
       } else if (info_index == 4) {
-        strcpy(current->grade, new_info); // å¹´çº§
+        strcpy(current->grade, new_info); // Äê¼¶
       } else if (info_index == 5) {
-        current->height = atoi(new_info); // èº«é«˜
+        current->height = atoi(new_info); // Éí¸ß
       } else if (info_index == 6) {
-        current->weight = atoi(new_info); // ä½“é‡
+        current->weight = atoi(new_info); // ÌåÖØ
       } else if (info_index == 7) {
-        strcpy(current->sex, new_info); // æ€§åˆ«
-        // --- ä¿®å¤ï¼šä¿®æ”¹æ€§åˆ«ååŒæ­¥æ›´æ–°é¡¹ç›®åç§° ---
-        if (strcmp(current->sex, "ç”·") == 0) {
+        strcpy(current->sex, new_info); // ĞÔ±ğ
+        // --- ĞŞ¸´£ºĞŞ¸ÄĞÔ±ğºóÍ¬²½¸üĞÂÏîÄ¿Ãû³Æ ---
+        if (strcmp(current->sex, "ÄĞ") == 0) {
           const char *m_names[PROJECT_COUNT] = {
-              "BMI", "è‚ºæ´»é‡", "50mè·‘", "ç«‹å®šè·³è¿œ", "å¼•ä½“å‘ä¸Š", "1000mè·‘"};
+              "BMI", "·Î»îÁ¿", "50mÅÜ", "Á¢¶¨ÌøÔ¶", "ÒıÌåÏòÉÏ", "1000mÅÜ"};
           for (int i = 0; i < PROJECT_COUNT; i++)
             strcpy(current->project_name[i], m_names[i]);
         } else {
           const char *f_names[PROJECT_COUNT] = {
-              "BMI", "è‚ºæ´»é‡", "50mè·‘", "ç«‹å®šè·³è¿œ", "ä»°å§èµ·å", "800mè·‘"};
+              "BMI", "·Î»îÁ¿", "50mÅÜ", "Á¢¶¨ÌøÔ¶", "ÑöÎÔÆğ×ø", "800mÅÜ"};
           for (int i = 0; i < PROJECT_COUNT; i++)
             strcpy(current->project_name[i], f_names[i]);
         }
       } else if (info_index >= 8 && info_index < 8 + PROJECT_COUNT) {
-        current->project_score[info_index - 8] = atoi(new_info); // é¡¹ç›®æˆç»©
+        current->project_score[info_index - 8] = atoi(new_info); // ÏîÄ¿³É¼¨
       } else if (info_index == 8 + PROJECT_COUNT) {
-        current->total_score = atoi(new_info); // æ€»æˆç»©
+        current->total_score = atoi(new_info); // ×Ü³É¼¨
       }
       return;
     }
@@ -301,15 +301,15 @@ void modify_student_info(struct student **head_ref, char *name, int info_index,
 }
 
 /**
- * @brief å°†æ•´ä¸ªé“¾è¡¨ä¿å­˜åˆ°æ–‡ä»¶
+ * @brief ½«Õû¸öÁ´±í±£´æµ½ÎÄ¼ş
  *
- * @param head_ref é“¾è¡¨å¤´æŒ‡é’ˆ
- * @param filename æ–‡ä»¶å
+ * @param head_ref Á´±íÍ·Ö¸Õë
+ * @param filename ÎÄ¼şÃû
  */
 void save_student_list_to_file(struct student **head_ref, char *filename) {
   FILE *file = fopen(filename, "wb");
   if (file == NULL) {
-    printf("æ— æ³•ä¿å­˜æ–‡ä»¶\n");
+    printf("ÎŞ·¨±£´æÎÄ¼ş\n");
     return;
   }
   struct student *current = *head_ref;
@@ -321,31 +321,31 @@ void save_student_list_to_file(struct student **head_ref, char *filename) {
 }
 
 /**
- * @brief ä»æ–‡ä»¶ä¸­è¯»å–é“¾è¡¨
+ * @brief ´ÓÎÄ¼şÖĞ¶ÁÈ¡Á´±í
  *
- * @param head_ref é“¾è¡¨å¤´æŒ‡é’ˆ
- * @param filename æ–‡ä»¶å
+ * @param head_ref Á´±íÍ·Ö¸Õë
+ * @param filename ÎÄ¼şÃû
  */
 struct student *load_student_list_from_file(char *filename) {
   FILE *file = fopen(filename, "rb");
   if (file == NULL)
     return NULL;
 
-  // æ–°çš„å¤´èŠ‚ç‚¹
+  // ĞÂµÄÍ·½Úµã
   struct student *head = NULL;
-  struct student temp; // è¿™æ˜¯ä¸€ä¸ªä¸´æ—¶æŒ¡ç®­ç‰Œï¼Œç”¨æ¥æ¥ä½ä»ç¡¬ç›˜è¯»å‡ºæ¥çš„ä¸œè¥¿
+  struct student temp; // ÕâÊÇÒ»¸öÁÙÊ±µ²¼ıÅÆ£¬ÓÃÀ´½Ó×¡´ÓÓ²ÅÌ¶Á³öÀ´µÄ¶«Î÷
   while (fread(&temp, sizeof(struct student), 1, file) == 1) {
-    // å…³é”®åŒºåˆ«åœ¨è¿™é‡Œï¼ï¼
-    // æ¯è¯»åˆ°ä¸€ä¸ªå­¦ç”Ÿï¼Œæˆ‘ä»¬å°±ç»™ä»–é€ ä¸€ä¸ªæ–°çš„â€œèº«ä½“â€ï¼ˆåˆ†é…æ–°å†…å­˜ï¼‰
+    // ¹Ø¼üÇø±ğÔÚÕâÀï£¡£¡
+    // Ã¿¶Áµ½Ò»¸öÑ§Éú£¬ÎÒÃÇ¾Í¸øËûÔìÒ»¸öĞÂµÄ¡°ÉíÌå¡±£¨·ÖÅäĞÂÄÚ´æ£©
     struct student *new_node = (struct student *)malloc(sizeof(struct student));
 
-    // æŠŠè¯»åˆ°çš„æ•°æ®æ‹·è´è¿‡å»
+    // °Ñ¶Áµ½µÄÊı¾İ¿½±´¹ıÈ¥
     memcpy(new_node, &temp, sizeof(struct student));
 
-    // å¿…é¡»æ¸…ç©ºæŒ‡é’ˆï¼Œå› ä¸ºç¡¬ç›˜é‡Œçš„æŒ‡é’ˆæ˜¯ä¸Šä¸€æ¬¡è¿è¡Œæ—¶çš„â€œç ´æ—§åœ°å€â€ï¼Œä¸èƒ½ç”¨
+    // ±ØĞëÇå¿ÕÖ¸Õë£¬ÒòÎªÓ²ÅÌÀïµÄÖ¸ÕëÊÇÉÏÒ»´ÎÔËĞĞÊ±µÄ¡°ÆÆ¾ÉµØÖ·¡±£¬²»ÄÜÓÃ
     new_node->next = NULL;
 
-    // æŠŠè¿™ä¸ªæ–°åŒå­¦æŒ‚åˆ°é“¾è¡¨çš„å°¾å·´ä¸Š
+    // °ÑÕâ¸öĞÂÍ¬Ñ§¹Òµ½Á´±íµÄÎ²°ÍÉÏ
     insert_student_list_tail(&head, new_node);
   }
   fclose(file);
@@ -353,20 +353,20 @@ struct student *load_student_list_from_file(char *filename) {
 }
 
 /**
- * @brief å°†é“¾è¡¨ä¿¡æ¯è¾“å‡ºä¸ºcsvæ–‡ä»¶
+ * @brief ½«Á´±íĞÅÏ¢Êä³öÎªcsvÎÄ¼ş
  *
- * @param head_ref é“¾è¡¨å¤´æŒ‡é’ˆ
- * @param filename æ–‡ä»¶å
+ * @param head_ref Á´±íÍ·Ö¸Õë
+ * @param filename ÎÄ¼şÃû
  */
 void output_csv(struct student **head_ref, char *filename) {
   FILE *file = fopen(filename, "w");
   if (file == NULL) {
-    printf("æ— æ³•ä¿å­˜æ–‡ä»¶\n");
+    printf("ÎŞ·¨±£´æÎÄ¼ş\n");
     return;
   }
-  // å†™å…¥è¡¨å¤´
-  fprintf(file, "å§“å,å­¦å·,ç­çº§,å¹´çº§,èº«é«˜,ä½“é‡,æ€§åˆ«,BMI,è‚ºæ´»é‡,50mè·‘,ç«‹å®šè·³è¿œ,"
-                "å¼•ä½“å‘ä¸Š/ä»°å§èµ·å,1000mè·‘/800mè·‘,æ€»æˆç»©\n");
+  // Ğ´Èë±íÍ·
+  fprintf(file, "ĞÕÃû,Ñ§ºÅ,°à¼¶,Äê¼¶,Éí¸ß,ÌåÖØ,ĞÔ±ğ,BMI,·Î»îÁ¿,50mÅÜ,Á¢¶¨ÌøÔ¶,"
+                "ÒıÌåÏòÉÏ/ÑöÎÔÆğ×ø,1000mÅÜ/800mÅÜ,×Ü³É¼¨\n");
   struct student *current = *head_ref;
   while (current != NULL) {
     fprintf(file, "%s,%d,%s,%s,%d,%d,%s,%d,%d,%d,%d,%d,%d,%d\n", current->name,
@@ -382,21 +382,21 @@ void output_csv(struct student **head_ref, char *filename) {
 }
 
 /**
- * @brief å¤åˆ¶é“¾è¡¨
+ * @brief ¸´ÖÆÁ´±í
  *
- * @param head_ref é“¾è¡¨å¤´æŒ‡é’ˆ
- * @return struct student* å¤åˆ¶åçš„é“¾è¡¨å¤´æŒ‡é’ˆ
+ * @param head_ref Á´±íÍ·Ö¸Õë
+ * @return struct student* ¸´ÖÆºóµÄÁ´±íÍ·Ö¸Õë
  */
 struct student *copy_student_list(struct student *head_ref) {
   struct student *new_head = NULL;
   struct student *current = head_ref;
   while (current != NULL) {
-    // å¿…é¡»ä¸ºæ–°èŠ‚ç‚¹åˆ†é…å†…å­˜
+    // ±ØĞëÎªĞÂ½Úµã·ÖÅäÄÚ´æ
     struct student *new_node = (struct student *)malloc(sizeof(struct student));
     if (new_node == NULL)
       return new_head;
 
-    // æ‹·è´å†…å®¹
+    // ¿½±´ÄÚÈİ
     memcpy(new_node, current, sizeof(struct student));
     new_node->next = NULL;
 
@@ -407,58 +407,58 @@ struct student *copy_student_list(struct student *head_ref) {
 }
 
 /**
- * @brief ä»è¿™ç§ç‰¹å®šæ ¼å¼çš„ TXT æ–‡ä»¶ä¸­å¯¼å…¥æ•°æ®
- * @param head_ref é“¾è¡¨å¤´æŒ‡é’ˆ
- * @param filename æ–‡ä»¶è·¯å¾„
- * @return int æˆåŠŸå¯¼å…¥çš„äººæ•°
+ * @brief ´ÓÕâÖÖÌØ¶¨¸ñÊ½µÄ TXT ÎÄ¼şÖĞµ¼ÈëÊı¾İ
+ * @param head_ref Á´±íÍ·Ö¸Õë
+ * @param filename ÎÄ¼şÂ·¾¶
+ * @return int ³É¹¦µ¼ÈëµÄÈËÊı
  */
 int import_from_custom_txt(struct student **head_ref, char *filename) {
   FILE *file = fopen(filename, "r");
   if (file == NULL) {
-    printf("æ— æ³•æ‰“å¼€æ–‡ä»¶ï¼š%s\n", filename);
+    printf("ÎŞ·¨´ò¿ªÎÄ¼ş£º%s\n", filename);
     return 0;
   }
 
   char line[256];
   int count = 0;
 
-  // ä¸´æ—¶å˜é‡ç”¨äºå­˜æ”¾è§£æå‡ºçš„æ•°æ®
+  // ÁÙÊ±±äÁ¿ÓÃÓÚ´æ·Å½âÎö³öµÄÊı¾İ
   char name[20], sex[10], grade[20], class_name[20];
   int id, height, weight;
-  int scores[6]; // BMI, è‚ºæ´»é‡, 50m, ç«‹å®šè·³, å¼•ä½“/ä»°å§, 1000/800
+  int scores[6]; // BMI, ·Î»îÁ¿, 50m, Á¢¶¨Ìø, ÒıÌå/ÑöÎÔ, 1000/800
   int total_score;
 
   while (fgets(line, sizeof(line), file)) {
-    // 1. å¯»æ‰¾å­¦å·ï¼ˆæ ‡è¯†æ–°å­¦ç”Ÿçš„å¼€å§‹ï¼‰
-    if (strstr(line, "å­¦å·ï¼š")) {
-      sscanf(strstr(line, "ï¼š") + 3, "%d", &id); // è·³è¿‡â€œï¼šâ€è¯»å–æ•°å­—
+    // 1. Ñ°ÕÒÑ§ºÅ£¨±êÊ¶ĞÂÑ§ÉúµÄ¿ªÊ¼£©
+    if (strstr(line, "Ñ§ºÅ£º")) {
+      sscanf(strstr(line, "£º") + 3, "%d", &id); // Ìø¹ı¡°£º¡±¶ÁÈ¡Êı×Ö
 
-      // 2. è¿ç»­è¯»å–æ¥ä¸‹æ¥çš„è¡Œ
-      while (fgets(line, sizeof(line), file) && !strstr(line, "â€”â€”â€”â€”â€”â€”â€”â€”")) {
-        if (strstr(line, "å§“åï¼š"))
-          sscanf(strstr(line, "ï¼š") + 3, "%s", name);
-        else if (strstr(line, "æ€§åˆ«ï¼š"))
-          sscanf(strstr(line, "ï¼š") + strlen("ï¼š"), "%s", sex);
-        else if (strstr(line, "å¹´çº§ï¼š"))
-          sscanf(strstr(line, "ï¼š") + strlen("ï¼š"), "%s", grade);
-        else if (strstr(line, "ç­çº§ï¼š"))
-          sscanf(strstr(line, "ï¼š") + strlen("ï¼š"), "%s", class_name);
-        else if (strstr(line, "æ€»åˆ†ï¼š"))
-          sscanf(strstr(line, "ï¼š") + strlen("ï¼š"), "%d", &total_score);
-        else if (strstr(line, "èº«é«˜ï¼š")) {
+      // 2. Á¬Ğø¶ÁÈ¡½ÓÏÂÀ´µÄĞĞ
+      while (fgets(line, sizeof(line), file) && !strstr(line, "¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª")) {
+        if (strstr(line, "ĞÕÃû£º"))
+          sscanf(strstr(line, "£º") + 3, "%s", name);
+        else if (strstr(line, "ĞÔ±ğ£º"))
+          sscanf(strstr(line, "£º") + strlen("£º"), "%s", sex);
+        else if (strstr(line, "Äê¼¶£º"))
+          sscanf(strstr(line, "£º") + strlen("£º"), "%s", grade);
+        else if (strstr(line, "°à¼¶£º"))
+          sscanf(strstr(line, "£º") + strlen("£º"), "%s", class_name);
+        else if (strstr(line, "×Ü·Ö£º"))
+          sscanf(strstr(line, "£º") + strlen("£º"), "%d", &total_score);
+        else if (strstr(line, "Éí¸ß£º")) {
           float h;
-          sscanf(strstr(line, "ï¼š") + strlen("ï¼š"), "%f", &h);
+          sscanf(strstr(line, "£º") + strlen("£º"), "%f", &h);
           height = (int)h;
-        } else if (strstr(line, "ä½“é‡ï¼š")) {
+        } else if (strstr(line, "ÌåÖØ£º")) {
           float w;
-          sscanf(strstr(line, "ï¼š") + strlen("ï¼š"), "%f", &w);
+          sscanf(strstr(line, "£º") + strlen("£º"), "%f", &w);
           weight = (int)w;
         }
 
-        // 3. æå–å„ä¸ªç§‘ç›®æˆç»©ï¼ˆå¯»æ‰¾å…³é”®è¯å¹¶å®šä½â€œåˆ†â€å­—å‰é¢çš„æ•°å­—ï¼‰
-        char *score_pos = strstr(line, "åˆ†");
+        // 3. ÌáÈ¡¸÷¸ö¿ÆÄ¿³É¼¨£¨Ñ°ÕÒ¹Ø¼ü´Ê²¢¶¨Î»¡°·Ö¡±×ÖÇ°ÃæµÄÊı×Ö£©
+        char *score_pos = strstr(line, "·Ö");
         if (score_pos) {
-          // å¾€å›æ‰¾æ•°å­—
+          // Íù»ØÕÒÊı×Ö
           char *p = score_pos - 1;
           while (p > line && (*p >= '0' && *p <= '9'))
             p--;
@@ -466,20 +466,20 @@ int import_from_custom_txt(struct student **head_ref, char *filename) {
 
           if (strstr(line, "BMI"))
             scores[0] = val;
-          else if (strstr(line, "è‚ºæ´»é‡"))
+          else if (strstr(line, "·Î»îÁ¿"))
             scores[1] = val;
-          else if (strstr(line, "50ç±³"))
+          else if (strstr(line, "50Ã×"))
             scores[2] = val;
-          else if (strstr(line, "ç«‹å®šè·³è¿œ"))
+          else if (strstr(line, "Á¢¶¨ÌøÔ¶"))
             scores[3] = val;
-          else if (strstr(line, "å¼•ä½“å‘ä¸Š") || strstr(line, "ä»°å§èµ·å"))
+          else if (strstr(line, "ÒıÌåÏòÉÏ") || strstr(line, "ÑöÎÔÆğ×ø"))
             scores[4] = val;
-          else if (strstr(line, "1000ç±³") || strstr(line, "800ç±³"))
+          else if (strstr(line, "1000Ã×") || strstr(line, "800Ã×"))
             scores[5] = val;
         }
       }
 
-      // 4. å…¨éƒ¨è¯»å–å®Œååˆ›å»ºèŠ‚ç‚¹
+      // 4. È«²¿¶ÁÈ¡Íêºó´´½¨½Úµã
       struct student *new_node =
           create_student_node(name, id, class_name, grade, height, weight, sex,
                               scores, total_score);

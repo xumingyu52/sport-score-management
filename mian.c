@@ -8,7 +8,7 @@
 int xitong();
 int xitong_xiao();
 int gong1(struct student **tou1); // 2.删除学生
-int gong2(struct student **tou1);
+int gong2(struct student **tou1); // 2.导入学生信息
 int gong3(struct student **tou1); // 3.查询学生信息
 void gong4(struct student **head); // 4.显示学生信息
 int gong5(struct student **tou1); // 5.修改学生信息
@@ -29,9 +29,9 @@ int gong11(struct student **tou1); // 11.保存数据
 int main() {
     // 检测文件
     struct student *tou1 = NULL;
-    tou1 = load_student_list_from_file("students.dat");
     int xuanze;
     while (1) {
+        tou1 = load_student_list_from_file("students.dat");
         system("cls");
         if (tou1 == NULL) {
             printf("系统自检：未检测到已存储的学生信息\n");
@@ -191,10 +191,10 @@ int gong3(struct student **tou1) { // 3.查询学生信息
 void gong4(struct student **head) { // 4.显示学生信息
     if (*head == NULL) { printf("空列表\n"); return; }
     struct student *curr = *head;
-    printf("姓名\t学号\t总分\tBMI\t肺活量\t50m跑\t立定跳远\t引体向上\t1000m跑\t总分\n");
+    printf("姓名\t学号\t班级\t年级\t性别\tBMI\t肺活量\t50m跑\t立定跳远\t引体向上\t1000m跑\t总分\n");
     while (curr) {
-        printf("%s\t%ld\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", curr->name, curr->school_number, 
-        curr->total_score, curr->project_score[0], curr->project_score[1], curr->project_score[2], 
+        printf("%s\t%ld\t%s\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", curr->name, curr->school_number, 
+        curr->class_name, curr->grade, curr->sex, curr->project_score[0], curr->project_score[1], curr->project_score[2], 
         curr->project_score[3], curr->project_score[4], curr->project_score[5], curr->total_score);
         curr = curr->next;
     }
@@ -206,7 +206,22 @@ int gong5(struct student **tou1) { // 5.修改学生成绩
     char xingming[20], xin[20];
     int haoma;
     printf("请输入姓名: "); scanf("%s", xingming);
-    printf("修改项编号(1-13): "); scanf("%d", &haoma);
+    printf("1.姓名\n");
+    printf("2.学号\n");
+    printf("3.班级\n");
+    printf("4.年级\n");
+    printf("5.性别\n");
+    printf("6.身高\n");
+    printf("7.体重\n");
+    printf("8.BMI\n");
+    printf("9.肺活量\n");
+    printf("10.50m跑\n");
+    printf("11.立定跳远\n");
+    printf("12.引体向上\n");
+    printf("13.1000m跑\n");
+    printf("14.总分\n");
+    printf("修改项编号(1-14): ");
+    scanf("%d", &haoma);
     printf("新值: "); scanf("%s", xin);
     modify_student_info(tou1, xingming, haoma, xin);
     printf("修改成功！\n");
@@ -222,7 +237,7 @@ int gong8(struct student **tou1) { // 8.按总分排序
     gong4(&fuzhi); // 调用4.显示学生信息
     //排序完成后，释放fuzhi
     delete_student_list(&fuzhi);
-    getchar();
+    //getchar();
     getchar();
     return 0;
 }
@@ -230,6 +245,7 @@ int gong8(struct student **tou1) { // 8.按总分排序
 int gong9(struct student **tou1) { // 9.按单项科目排序
     int kemu;
     printf("排序结果不会保存。\n");
+    printf("\t1.BMI \t2.肺活量 \t3.50m跑 \t4.立定跳远 \t5.引体向上 \t6.1000m跑\n");
     printf("输入科目编号(1-6): ");
     scanf("%d", &kemu);
     struct student *fuzhi = copy_student_list(*tou1);
@@ -245,7 +261,7 @@ int gong9(struct student **tou1) { // 9.按单项科目排序
 int gong10(struct student **tou1) { // 10.将数据输出为csv文件
     output_csv(tou1, "学生成绩.csv");
     printf("输出成功！数据保存在学生成绩.csv文件中\n");
-    getchar();
+    //getchar();
     getchar();
     return 0;
 }
@@ -253,7 +269,7 @@ int gong10(struct student **tou1) { // 10.将数据输出为csv文件
 int gong11(struct student **tou1) { // 11.保存数据
     save_student_list_to_file(tou1, "students.dat");
     printf("保存成功！数据保存在students.dat文件中\n");
-    getchar();
+    //getchar();
     getchar();
     return 0;
 }

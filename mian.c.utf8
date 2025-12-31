@@ -1,0 +1,46 @@
+#include "information.h"  
+#include <stdio.h> 
+#include <stdlib.h>
+#include <string.h> 
+
+struct student *tou1 = NULL; 
+
+int xitong();
+int xitong_xiao();
+void zijian();
+int gong1(); //1.锟斤拷锟斤拷学锟斤拷锟斤拷息
+int gong2(); //2.删锟斤拷学锟斤拷
+int gong3(); //3.锟斤拷询学锟斤拷锟斤拷息
+void gong4(); //4.锟斤拷示学锟斤拷锟斤拷息
+int gong5(); //5.锟睫革拷学锟斤拷锟斤拷息
+int gong8(); //8.锟斤拷锟斤拷
+int gong9();
+
+int main()
+{
+   
+    int chengji[7] = {81,82,83,84,85,86};
+    struct student *zhangsan = create_student_node(
+    "锟斤拷锟斤拷",
+    31230,
+    "锟脚癸拷4252",
+    "2025锟斤拷",
+    170,66,
+    "锟斤拷",
+    chengji,
+    58
+    );
+    insert_student_list_tail(&tou1, zhangsan);
+    //锟斤拷锟斤拷一锟斤拷学锟斤拷锟斤拷锟斤拷息
+
+    zijian();//锟叫断革拷使锟斤拷锟斤拷锟斤拷系统使锟斤拷
+
+    return 0;
+}
+
+
+void zijian() 
+{
+    
+    int xuanze;
+    // 锟皆检：锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷欠锟斤拷锟窖э拷锟斤拷锟较

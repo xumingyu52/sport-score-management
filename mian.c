@@ -1,511 +1,328 @@
-#include "information.h"  
-#include <stdio.h> 
+#include "information.h"
+#include <stdio.h>
 #include <stdlib.h>
-#include <string.h> 
-
-struct student *tou1 = NULL; 
+#include <string.h>
 
 int xitong();
 int xitong_xiao();
-void zijian();
-int gong1(); //1.æ–°å¢å­¦ç”Ÿä¿¡æ¯
-int gong2(); //2.åˆ é™¤å­¦ç”Ÿ
-int gong3(); //3.æŸ¥è¯¢å­¦ç”Ÿä¿¡æ¯
-void gong4(); //4.æ˜¾ç¤ºå­¦ç”Ÿä¿¡æ¯
-int gong5(); //5.ä¿®æ”¹å­¦ç”Ÿä¿¡æ¯
-int gong8(); //8.æ’åº
-int gong9();
+int gong1(struct student **tou1);  // 2.É¾³ıÑ§Éú
+int gong2(struct student **tou1);  // 2.µ¼ÈëÑ§ÉúĞÅÏ¢
+int gong3(struct student **tou1);  // 3.²éÑ¯Ñ§ÉúĞÅÏ¢
+void gong4(struct student **head); // 4.ÏÔÊ¾Ñ§ÉúĞÅÏ¢
+int gong5(struct student **tou1);  // 5.ĞŞ¸ÄÑ§ÉúĞÅÏ¢
+int gong8(struct student **tou1);  // 8.°´×Ü·ÖÅÅĞò
+int gong9(struct student **tou1);  // 9.°´µ¥Ïî¿ÆÄ¿ÅÅĞò
+int gong10(struct student **tou1); // 10.½«Êı¾İÊä³öÎªcsvÎÄ¼ş
+int gong11(struct student **tou1); // 11.±£´æÊı¾İ
 
-int main()
-{
-   
-    int chengji[7] = {81,82,83,84,85,86};
-    struct student *zhangsan = create_student_node(
-    "å¼ ä¸‰",
-    31230,
-    "ä¿¡ç®¡4252",
-    "2025çº§",
-    170,66,
-    "ç”·",
-    chengji,
-    58
-    );
-    insert_student_list_tail(&tou1, zhangsan);
-    //åˆ›å»ºä¸€ä¸ªå­¦ç”Ÿçš„ä¿¡æ¯
+// int main() {
+//     int chengji[7] = {81, 82, 83, 84, 85, 86};
+//     struct student *zhangsan = create_student_node(
+//         "ÕÅÈı", 31230, "ĞÅ¹Ü4252", "2025¼¶", 170, 66, "ÄĞ", chengji, 58);
+//     insert_student_list_tail(&tou1, zhangsan);
+//     zijian();
+//     return 0;
+// }
 
-    zijian();//åˆ¤æ–­è¯¥ä½¿ç”¨é‚£ç§ç³»ç»Ÿä½¿ç”¨
+int main() {
+  // ¼ì²âÎÄ¼ş
+  struct student *tou1 = NULL;
+  tou1 = load_student_list_from_file("students.dat");
+  int xuanze;
+  while (1) {
+    system("cls");
+    if (tou1 == NULL) {
+      printf("ÏµÍ³×Ô¼ì£ºÎ´¼ì²âµ½ÒÑ´æ´¢µÄÑ§ÉúĞÅÏ¢\n");
+      printf("ÇëÈ·±£ÎÄ¼şÔÚ³ÌĞòËùÔÚÎÄ¼ş¼ĞÖĞ\n");
+      printf("----------------------------------------\n");
+      xuanze = xitong_xiao();
+    } else {
+      printf("ÏµÍ³×Ô¼ì£º¼ì²âµ½ÒÑ´æ´¢µÄÑ§ÉúĞÅÏ¢\n");
+      printf("----------------------------------------\n");
+      xuanze = xitong();
+    }
+    if (xuanze == 0) {
+      printf("ÏµÍ³ÒÑÍË³ö, Ğ»Ğ»ÄúµÄÊ¹ÓÃ\n");
+      // Çå¿ÕÁ´±í
+      delete_student_list(&tou1);
+      break;
+    } else if (xuanze == 1) {
+      gong1(&tou1);
+    } else if (xuanze == 2) {
+      gong2(&tou1);
+    } else if (xuanze == 3) {
+      gong3(&tou1);
+    } else if (xuanze == 4) {
+      gong4(&tou1);
+    } else if (xuanze == 5) {
+      gong5(&tou1);
+    } else if (xuanze == 8) {
+      gong8(&tou1);
+    } else if (xuanze == 9) {
+      gong9(&tou1);
+    } else if (xuanze == 10) {
+      gong10(&tou1);
+    } else if (xuanze == 11) {
+      gong11(&tou1);
+    } else {
+      printf("ÊäÈëµÄÖ¸ÁîÎŞĞ§\n");
+    }
+  }
+}
 
+int xitong_xiao() {
+  int xuanze;
+  printf("---------------Ñ§Éú³É¼¨¹ÜÀíÏµÍ³---------\n");
+  printf("-----------------1.Â¼ÈëÑ§ÉúĞÅÏ¢-------------------------------\n");
+  printf("-----------------0.ÍË³öÏµÍ³-------------------------\n");
+  printf("ÇëÊäÈëÏàÓ¦µÄÊı×ÖÒÔÊ¹ÓÃÏàÓ¦µÄ¹¦ÄÜ: ");
+  scanf("%d", &xuanze);
+  printf("\n");
+  return xuanze;
+}
+
+int xitong() {
+  int xuanze;
+  printf("---------------Ñ§Éú³É¼¨¹ÜÀíÏµÍ³---------\n");
+  printf("-----------------1.Â¼ÈëÑ§ÉúĞÅÏ¢-------------------------------\n");
+  printf("-----------------2.É¾³ıÑ§ÉúĞÅÏ¢---------------------------\n");
+  printf(
+      "-----------------3.²éÑ¯Ñ§ÉúĞÅÏ¢(ĞÕÃû)-------------------------------\n");
+  printf("-----------------4.ÏÔÊ¾Ñ§ÉúĞÅÏ¢--------------------------------\n");
+  printf("-----------------5.ĞŞ¸ÄÑ§Éú³É¼¨--------------------------------\n");
+  printf(
+      "-----------------8.°´×Ü³É¼¨¸ßµÍÅÅĞò-------------------------------\n");
+  printf(
+      "-----------------9.°´µ¥Ïî³É¼¨¸ßµÍÅÅĞò-------------------------------\n");
+  printf("-----------------10.½«Êı¾İÊä³öÎªcsvÎÄ¼ş-------------------------\n");
+  printf("-----------------11.±£´æÊı¾İ--------------------------------\n");
+  printf("-----------------0.ÍË³öÏµÍ³-------------------------\n");
+  printf("ÇëÊäÈëÏàÓ¦µÄÊı×ÖÒÔÊ¹ÓÃÏàÓ¦µÄ¹¦ÄÜ: ");
+  scanf("%d", &xuanze);
+  printf("\n");
+  return xuanze;
+}
+
+int gong1(struct student **tou1) { // 1.Â¼ÈëÑ§ÉúĞÅÏ¢
+  printf("ÇëÑ¡ÔñÄãĞèÒªµÄµ¼Èë·½Ê½\n");
+  printf("1.´ÓtxtÖĞÅúÁ¿µ¼Èë\n");
+  printf("2.Öğ¸öµ¼Èë\n");
+  printf("0.·µ»ØÉÏÒ»¼¶²Ëµ¥\n");
+  printf("ÇëÊäÈëÏàÓ¦µÄÊı×ÖÒÔÊ¹ÓÃÏàÓ¦µÄ¹¦ÄÜ: ");
+  int xuanze;
+  scanf("%d", &xuanze);
+  if (xuanze == 0)
     return 0;
-}
-
-
-void zijian() 
-{
-    
-    int xuanze;
-    // è‡ªæ£€ï¼šæ£€æŸ¥é“¾è¡¨ä¸­æ˜¯å¦æœ‰å­¦ç”Ÿä¿¡æ¯
-    while (1)
-    {
-        system("cls");
-
-        if (tou1 == NULL)
-        {
-            printf("ç³»ç»Ÿè‡ªæ£€ï¼šæœªå‘ç°å·²å­˜å‚¨çš„å­¦ç”Ÿä¿¡æ¯\n");
-            printf("----------------------------------------\n");
-            xuanze = xitong_xiao();  // æ˜¾ç¤ºç®€åŒ–èœå•ï¼ˆåªæœ‰æ–°å¢å’Œé€€å‡ºï¼‰
-        }
-
-        else
-        {
-            printf("ç³»ç»Ÿè‡ªæ£€ï¼šå‘ç°å·²å­˜å‚¨çš„å­¦ç”Ÿä¿¡æ¯\n");
-            printf("----------------------------------------\n");
-            xuanze = xitong();  // æ˜¾ç¤ºå®Œæ•´èœå•
-        }
-
-    if(xuanze == 0)
-    {
-        printf("ç³»ç»Ÿå·²é€€å‡º,æ„Ÿè°¢æ‚¨çš„ä½¿ç”¨");
-        break;
-    }
-    
-    else if(xuanze == 1)
-    {
-        gong1();
-        continue;
-    }
-
-    else if(xuanze == 2)
-    {
-        gong2();
-        continue;
-    }
-
-
-    else if(xuanze == 3)
-    {
-        gong3();       
-        continue;
-    }
-
-
-    else if(xuanze == 4)
-    {
-
-
-    }
-
-
-    else if(xuanze == 5)
-    {
-        gong5();
-        continue;
-    }
-
-
-    else if(xuanze == 6)
-    {
-
-
-    }
-
-
-    else if(xuanze == 7)
-    {
-
-
-    }
-
-
-    else if(xuanze == 8)
-    {
-        gong8();
-        continue;
-    }
-
-
-    else if(xuanze == 9)
-    {
-        gong9();
-        continue;
-    }
-
-
-    else if(xuanze == 10)
-    {
-
-
-    }
-
-
-    else
-    {printf("è¾“å…¥æ•°å­—æ— æ•ˆ");}
-        
-
-    }
-}
-
-
-
-int xitong_xiao()
-{
-int xuanze;
-
-printf("---------------å­¦ç”Ÿæˆç»©ç®¡ç†ç³»ç»Ÿ---------\n");
-
-printf("-----------------1.æ–°å¢å­¦ç”Ÿä¿¡æ¯-------------------------------\n");
-
-printf("-----------------0.Quit the System-------------------------\n");
-
-printf("è¯·è¾“å…¥å¯¹åº”æ•°å­—ä»¥ä½¿ç”¨ç›¸åº”åŠŸèƒ½");
-
-scanf("%d", &xuanze);
-    
-return xuanze;
-}
-
-
-
-int xitong()  
-{
-    int xuanze;
-
-printf("---------------å­¦ç”Ÿæˆç»©ç®¡ç†ç³»ç»Ÿ---------\n");
-
-printf("-----------------1.æ–°å¢å­¦ç”Ÿä¿¡æ¯-------------------------------\n");//
-
-printf("-----------------2.åˆ é™¤å­¦ç”Ÿä¿¡æ¯---------------------------\n");//
-
-printf("-----------------3.æŸ¥è¯¢å­¦ç”Ÿä¿¡æ¯(å§“å)-------------------------------\n");//
-
-printf("-----------------4.æ˜¾ç¤ºå­¦ç”Ÿä¿¡æ¯--------------------------------\n");
-
-printf("-----------------5.ä¿®æ”¹å­¦ç”Ÿæˆç»©--------------------------------\n");
-
-printf("-----------------6.ç»Ÿè®¡å„é¡¹ç›®å¹³å‡åˆ†-----é¡¹---æ•°æ•°------------------------\n");
-
-printf("-----------------7.ä¿å­˜----------------------------------\n");
-
-printf("-----------------8.æŒ‰æ€»æˆç»©æ’åºæ’åº-------------------------------\n");
-
-printf("-----------------9.æŒ‰å•ç§‘æˆç»©æ’åº-------------------------------\n");
-
-printf("-----------------10.è¾“å‡ºä¸ºcsvæ–‡ä»¶-------------------------------\n");
-
-printf("-----------------10.è®¡ç®—å•ç§‘å¹³å‡åˆ†-------------------------------\n");
-
-printf("-----------------0.Quit the System-------------------------\n");//
-
-printf("è¯·è¾“å…¥å¯¹åº”æ•°å­—ä»¥ä½¿ç”¨ç›¸åº”åŠŸèƒ½");
-
-scanf("%d", &xuanze);
-    
-
-
-return xuanze;
-
-}
-
-int gong1()//1.æ–°å¢å­¦ç”Ÿä¿¡æ¯
-{
-    char xingming[20];
-    long int xuehao;
-    char banji[10],nianji[10];
-    int shengao,tizhong;
-    char xingbie[5];
-    int chengji[6];
-    int zongfen;
-
-
-
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„å§“å,æˆ–è¾“å…¥0é€€å‡º");
-    scanf("%s",xingming);
-
-    if(strcmp(xingming, "0") == 0)
-    {return 0;}
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„å­¦å·");
-    scanf("%ld",&xuehao);
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„ç­çº§");
-    scanf("%s",banji);
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„å¹´çº§");
-    scanf("%s",nianji);
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„èº«é«˜");
-    scanf("%d",&shengao);
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„ä½“é‡");
-    scanf("%d",&tizhong);
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„æ€§åˆ«");
-    scanf("%s",xingbie);
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„æ€»åˆ†");
-    scanf("%d",&zongfen);
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„BMIçš„åˆ†æ•°");
-    scanf("%d",&chengji[0]);
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„è‚ºæ´»é‡çš„åˆ†æ•°");
-    scanf("%d",&chengji[1]);
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„50mè·‘çš„åˆ†æ•°");
-    scanf("%d",&chengji[2]);
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„ç«‹å®šè·³è¿œçš„åˆ†æ•°");
-    scanf("%d",&chengji[3]);
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„å¼•ä½“å‘ä¸Šçš„åˆ†æ•°");
-    scanf("%d",&chengji[4]);
-
-    printf("è¯·è¾“å…¥æ‚¨è¦æ·»åŠ çš„å­¦ç”Ÿçš„1000mè·‘çš„åˆ†æ•°");
-    scanf("%d",&chengji[5]);
-
-
-    struct student *xingtianjia = create_student_node(
-    xingming,
-    xuehao,
-    banji,
-    nianji,
-    shengao,
-    tizhong,
-    xingbie,
-    chengji,
-    zongfen
-    );
-
-    insert_student_list_tail(&tou1,xingtianjia);
-    
-    printf("æ³¨æ„:ç³»ç»Ÿä¸ä¼šè‡ªåŠ¨ä¿å­˜,è¯·å‰å¾€èœå•æ æ‰‹åŠ¨è¿›è¡Œä¿å­˜");
-    printf("æ·»åŠ æˆåŠŸ,è¯·æŒ‰ä»»æ„é”®è¿”å›");
-    getchar();
-    getchar();
-    return 0;
-}
-
-int gong2() //åˆ é™¤å­¦ç”Ÿ
-{
-    char xingming[20];
-    int i =1;
-
-    while(1)
-    {
-
-        printf("è¯·è¾“å…¥æ‚¨è¦åˆ é™¤çš„å­¦ç”Ÿçš„å§“å,æˆ–è¾“å…¥0é€€å‡º");
-        scanf("%s",xingming);
-
-        if(strcmp(xingming, "0") == 0)
-        {return 0;}
-
-        //å…ˆæŸ¥æ‰¾
-        struct student *chaxun = search_student_list(&tou1,xingming);
-
-        if(chaxun == NULL)  // å¦‚æœæ²¡æ‰¾åˆ°
-        {
-            printf("æ²¡æœ‰æ‰¾åˆ°è¿™ä¸ªå­¦ç”Ÿ\n");
-            continue;
-        }
-
-        else  // å¦‚æœæ‰¾åˆ°äº†
-        {
-            // éœ€è¦å…ˆçŸ¥é“è¿™ä¸ªå­¦ç”Ÿæ˜¯ç¬¬å‡ ä¸ª
-            int i = 1;
-            struct student *temp = tou1;
-            
-            while(temp != chaxun)  // éå†ï¼Œç›´åˆ°æ‰¾åˆ°ç›®æ ‡èŠ‚ç‚¹
-            {
-                temp = temp->next;
-                i++;
-            }
-            
-            // åˆ é™¤
-            delete_student_list_node(&tou1, i);
-            printf("åˆ é™¤æˆåŠŸ,è¯·æŒ‰ä»»æ„é”®è¿”å›\n");
-            getchar();
-            getchar();
-            return 0;
-            }
-    }
-
-
-}
-
-int gong3()//3.æŸ¥è¯¢å­¦ç”Ÿä¿¡æ¯(å§“å)
-{
-
-    char xingming[20];
+  if (xuanze == 1) {
+    // ´ÓtxtÖĞÅúÁ¿µ¼ÈëÑ§Éú³É¼¨
     int i = 0;
-
-    while (getchar() != '\n');//æ¸…ç©ºç¼“å†²åŒº
-
-    while(1)
-    {
-        printf("è¯·è¾“å…¥æ‚¨è¦æŸ¥è¯¢çš„å­¦ç”Ÿçš„å§“å,æˆ–è¾“å…¥0é€€å‡º");
-        scanf("%s",xingming);
-
-        if(strcmp(xingming, "0") == 0)
-        {return 0;}
-
-        struct student *chadao = search_student_list(&tou1,xingming);
-
-        if(chadao != NULL)
-        {
-            printf("\n=== å­¦ç”Ÿä¿¡æ¯å¦‚ä¸‹ ===\n");
-
-            printf("\nå­¦ç”Ÿ %s\nå­¦å· %ld\nç­çº§ %s\nå¹´çº§ %s\nèº«é«˜ %d\nä½“é‡ %d\næ€»åˆ† %d\n",
-            chadao->name,
-            chadao->school_number,
-            chadao->class_name,
-            chadao->grade,
-            chadao->height,
-            chadao->weight,
-            chadao->total_score
-            );
-
-            printf("å„é¡¹ç›®åˆ†æ•°åˆ†åˆ«ä¸º\n");
-            while(i<6)
-            {
-                printf("%s---%dåˆ†\n",
-                    chadao->project_name[i],
-                    chadao->project_score[i]
-                    );
-                i++;
-            }
-
-            printf("è¯·è¾“å…¥ä»»æ„é”®é€€å‡º");
-            getchar();
-            getchar();
-            return 0;
-
-        }
-        else
-        {
-            printf("æœªæŸ¥æ‰¾åˆ°è¯¥å­¦ç”Ÿçš„ä¸ªäººä¿¡æ¯,è¯·è¾“å…¥ä»»æ„é”®è¿”å›\n");
-            getchar();
-            getchar();
-            continue;
-        }
-    }
-}
-/**
-* @brief æ˜¾ç¤ºå­¦ç”Ÿä¿¡æ¯
-* @param äºŒçº§å¤´æŒ‡é’ˆ
-*/
-void gong4(struct student **head)
-{
-    if (*head == NULL)
-    printf("å½“å‰æ— ä¿¡æ¯ã€‚\n");
-    else{
-        printf("\tå§“å\tå­¦å·\tç­çº§\tå¹´çº§\tèº«é«˜\tä½“é‡\tæ€§åˆ«\tBMI\tè‚ºæ´»é‡\t50mè·‘\tç«‹å®šè·³è¿œ\tå¼•ä½“å‘ä¸Š\\ä»°å§èµ·å\t1000ç±³è·‘\\800ç±³è·‘\tæ€»åˆ†\n");
-        struct student* current = *head;
-        while (current != NULL)
-        {
-            //å§“å å­¦å· ç­çº§ å¹´çº§ èº«é«˜ ä½“é‡ æ€§åˆ« BMI è‚ºæ´»é‡ 50 ç«‹å®š å¼•ä½“ 1000
-            printf("\t%s\t%ld\t%s\t%s\t%d\t%d\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
-            current->name,current->school_number,current->class_name,
-            current->grade,current->height,current->weight,
-            current->sex,current->project_score[0],current->project_score[1],
-            current->project_score[2],current->project_score[3],current->project_score[4],
-            current->project_score[5],current->total_score);
-            
-            current = current->next;
-         
-        printf("æ˜¾ç¤ºå®Œæ¯•ï¼");
-        }
-    }
-    
-}
-
-int gong5()
-{
-    char xingming[20],xin[20];
-    int haoma;
-
-    while(1)
-    {
-
-        printf("è¯·è¾“å…¥æ‚¨è¦ä¿®æ”¹çš„å­¦ç”Ÿçš„å§“å,æˆ–è¾“å…¥0é€€å‡º");
-        scanf("%s",xingming);
-
-        if(strcmp(xingming, "0") == 0)
-        {return 0;}
-
-        printf("1.å§“å\t\t2.å­¦å·\t\t3.ç­çº§\n");
-        printf("4.å¹´çº§\t\t5.èº«é«˜\t\t6.ä½“é‡\n");
-        printf("7.æ€§åˆ«\t\t8.BMI\t\t9.è‚ºæ´»é‡\n");
-        printf("10.50mè·‘\t11.ç«‹å®šè·³è¿œ\t12.å¼•ä½“å‘ä¸Š(ä»°å§èµ·å)\n");
-        printf("13.1000ç±³è·‘(800ç±³è·‘)");
-        printf("\nè¯·è¾“å…¥æ‚¨è¦ä¿®æ”¹çš„ä¿¡æ¯çš„ç¼–å·:");
-        scanf("%d",&haoma);
-
-        if(haoma > 13 || haoma < 1)
-        {
-            printf("\næ‚¨è¾“å…¥çš„ç¼–å·ä¸å­˜åœ¨,è¯·é‡æ–°è¾“å…¥");
-            continue;
-        }
-
-        printf("\nè¯·è¾“å…¥æ‚¨ä¿®æ”¹åçš„æ•°æ®:");
-        scanf("%s",xin);
-
-        modify_student_info(&tou1,xingming,haoma,xin);
-
-        printf("\nä¿®æ”¹æˆåŠŸ,è¯·è¾“å…¥ä»»æ„é”®é€€å‡º");
-        getchar();
-        getchar();
-        return 0;
-    }
-}
-
-
-int gong8()
-{
-    int paiming = 1;
-    struct student *fuzhi = copy_student_list(tou1);
-
-    sort_student_list(&fuzhi,1,0);
-    
-    while(1)
-    {
-        if(fuzhi != NULL)
-        {
-            printf("%d.%s\t%d\n",paiming,fuzhi->name,fuzhi->total_score);
-            fuzhi = fuzhi->next;
-            paiming++;
-        }
-       ar();
-    }   
-    return 0;
-}
-
-
-int gong9()
-{
-    int paiming = 1,kemu;
-    struct student *fuzhi = copy_student_list(tou1);
-    printf("è¯·è¾“å…¥æ‚¨è¦æ’åºçš„ç§‘ç›®çš„åºå·");
-    printf("1.BMI\t2.è‚ºæ´»é‡\n3.50mè·‘\t4.ç«‹å®šè·³è¿œ\n5.å¼•ä½“å‘ä¸Š(ä»°å§èµ·å)\t6.1000ç±³è·‘(800ç±³è·‘)\n");
-    scanf("%d",&kemu);
-
-    sort_student_list(&fuzhi,2,kemu);
-    printf("---------------------------------------------\n");
-    printf("  å§“å\tç§‘ç›®æˆç»©\n");
-
-    while(1)
-    {
-        if(fuzhi != NULL)
-        {
-            printf("%d.%s\t %d\n",paiming,fuzhi->name,fuzhi->project_score[kemu]);
-            fuzhi = fuzhi->next;
-            paiming++;
-        }
-        else 
-        {break;}
-    }
-
-    printf("æ’åºå®Œæˆ,è¯·è¾“å…¥ä»»æ„é”®é€€å‡º");
+    printf("ÇëÊäÈëÎÄ¼şÃû: ");
+    char filename[1000];
+    scanf("%s", filename);
     getchar();
-    getchar();   
+    i = import_from_custom_txt(tou1, filename);
+    if (i == 0) {
+      printf("Î´ÕÒµ½¶ÔÓ¦ÎÄ¼ş\n");
+      getchar();
+      return 0;
+    } else if (i) {
+      printf("µ¼Èë³É¹¦,¹²µ¼Èë%dÌõÊı¾İ\n", i);
+      getchar();
+      return 0;
+    }
+  } else if (xuanze == 2) {
+    // Öğ¸öµ¼ÈëÑ§ÉúÊı¾İ
+    char xingming[20], xingbie[5], banji[10], nianji[10];
+    char xuehao[20];
+    float shengao, tizhong;
+    int zongfen, chengji[7];
+    printf("ÇëÊäÈëÄúÏëÂ¼ÈëµÄÑ§ÉúĞÕÃû, ÊäÈë0ÍË³ö: ");
+    scanf("%s", xingming);
+    if (strcmp(xingming, "0") == 0)
+      return 0;
+    printf("Ñ§ºÅ: ");
+    scanf("%s", xuehao);
+    printf("°à¼¶: ");
+    scanf("%s", banji);
+    printf("Äê¼¶: ");
+    scanf("%s", nianji);
+    printf("Éí¸ß: ");
+    scanf("%f", &shengao);
+    printf("ÌåÖØ: ");
+    scanf("%f", &tizhong);
+    printf("ĞÔ±ğ: ");
+    scanf("%s", xingbie);
+    printf("×Ü·Ö: ");
+    scanf("%d", &zongfen);
+    printf("BMI: ");
+    scanf("%d", &chengji[0]);
+    printf("·Î»îÁ¿: ");
+    scanf("%d", &chengji[1]);
+    printf("×øÎ»ÌåÇ°Çü: ");
+    scanf("%d", &chengji[2]);
+    printf("50mÅÜ: ");
+    scanf("%d", &chengji[3]);
+    printf("Á¢¶¨ÌøÔ¶: ");
+    scanf("%d", &chengji[4]);
+    printf("ÒıÌåÏòÉÏ: ");
+    scanf("%d", &chengji[5]);
+    printf("1000mÅÜ: ");
+    scanf("%d", &chengji[6]);
+    struct student *node =
+        create_student_node(xingming, xuehao, banji, nianji, shengao, tizhong,
+                            xingbie, chengji, zongfen);
+    insert_student_list_tail(tou1, node);
+    printf("Ìí¼Ó³É¹¦£¡\n");
+    getchar();
+    getchar();
     return 0;
+  }
+}
+
+int gong2(struct student **tou1) { // 2.É¾³ıÑ§ÉúĞÅÏ¢
+  char xingming[20];
+  printf("ÇëÊäÈëÄúÏëÉ¾³ıµÄÑ§ÉúĞÕÃû: ");
+  scanf("%s", xingming);
+  struct student *chaxun = search_student_list(tou1, xingming);
+  if (chaxun == NULL) {
+    printf("Ã»ÓĞÕÒµ½¸ÃÑ§Éú\n");
+  } else {
+    int i = 1;
+    struct student *temp = *tou1;
+    while (temp != chaxun) {
+      temp = temp->next;
+      i++;
+    }
+    delete_student_list_node(tou1, i);
+    printf("É¾³ı³É¹¦£¡\n");
+  }
+  getchar();
+  getchar();
+  return 0;
+}
+
+int gong3(struct student **tou1) { // 3.²éÑ¯Ñ§ÉúĞÅÏ¢
+  char xingming[20];
+  printf("ÇëÊäÈë²éÑ¯ĞÕÃû: ");
+  scanf("%s", xingming);
+  struct student *res = search_student_list(tou1, xingming);
+  if (res) {
+    // ½«ĞÅÏ¢È«²¿Êä³ö
+    printf("ĞÕÃû: %s\n Ñ§ºÅ: %s\n °à¼¶: %s\n Äê¼¶: %s\n Éí¸ß: %.1f\n ÌåÖØ: "
+           "%.1f\n ĞÔ±ğ: %s\n BMI: %d\n ·Î»îÁ¿: %d\n ×øÎ»ÌåÇ°Çü: %d\n 50mÅÜ: "
+           "%d\n Á¢¶¨ÌøÔ¶: "
+           "%d\n ÒıÌåÏòÉÏ: %d\n 1000mÅÜ: %d\n ×Ü·Ö: %d\n",
+           res->name, res->school_number, res->class_name, res->grade,
+           res->height, res->weight, res->sex, res->project_score[0],
+           res->project_score[1], res->project_score[2], res->project_score[3],
+           res->project_score[4], res->project_score[5], res->project_score[6],
+           res->total_score);
+  } else {
+    printf("Î´ÕÒµ½¸ÃÑ§Éú\n");
+  }
+  getchar();
+  getchar();
+  return 0;
+}
+
+void gong4(struct student **head) { // 4.ÏÔÊ¾Ñ§ÉúĞÅÏ¢
+  if (*head == NULL) {
+    printf("¿ÕÁĞ±í\n");
+    return;
+  }
+  struct student *curr = *head;
+  printf(
+      "%-10s %-13s %-12s %-12s %-8s %-8s %-6s %-6s %-8s %-10s %-8s %-10s %-10s "
+      "%-10s %-8s\n",
+      "ĞÕÃû", "Ñ§ºÅ", "°à¼¶", "Äê¼¶", "Éí¸ß", "ÌåÖØ", "ĞÔ±ğ", "BMI", "·Î»îÁ¿",
+      "×øÎ»ÌåÇ°Çü", "50mÅÜ", "Á¢¶¨ÌøÔ¶", "ÒıÌåÏòÉÏ", "1000mÅÜ", "×Ü·Ö");
+  while (curr) {
+    printf(
+        "%-10s %-13s %-12s %-12s %-8.1f %-8.1f %-6s %-6d %-8d %-10d %-8d %-10d "
+        "%-10d %-10d %-8d\n",
+        curr->name, curr->school_number, curr->class_name, curr->grade,
+        curr->height, curr->weight, curr->sex, curr->project_score[0],
+        curr->project_score[1], curr->project_score[2], curr->project_score[3],
+        curr->project_score[4], curr->project_score[5], curr->project_score[6],
+        curr->total_score);
+    curr = curr->next;
+  }
+  getchar();
+  getchar();
+}
+
+int gong5(struct student **tou1) { // 5.ĞŞ¸ÄÑ§Éú³É¼¨
+  char xingming[20], xin[20];
+  int haoma;
+  printf("ÇëÊäÈëĞÕÃû: ");
+  scanf("%s", xingming);
+  printf("1.ĞÕÃû\n");
+  printf("2.Ñ§ºÅ\n");
+  printf("3.°à¼¶\n");
+  printf("4.Äê¼¶\n");
+  printf("5.ĞÔ±ğ\n");
+  printf("6.Éí¸ß\n");
+  printf("7.ÌåÖØ\n");
+  printf("8.BMI\n");
+  printf("9.·Î»îÁ¿\n");
+  printf("10.×øÎ»ÌåÇ°Çü\n");
+  printf("11.50mÅÜ\n");
+  printf("12.Á¢¶¨ÌøÔ¶\n");
+  printf("13.ÒıÌåÏòÉÏ\n");
+  printf("14.1000mÅÜ\n");
+  printf("15.×Ü·Ö\n");
+  printf("ĞŞ¸ÄÏî±àºÅ(1-15): ");
+  scanf("%d", &haoma);
+  printf("ĞÂÖµ: ");
+  scanf("%s", xin);
+  modify_student_info(tou1, xingming, haoma, xin);
+  printf("ĞŞ¸Ä³É¹¦£¡\n");
+  getchar();
+  getchar();
+  return 0;
+}
+
+int gong8(struct student **tou1) { // 8.°´×Ü·ÖÅÅĞò
+  printf("ÅÅĞò½á¹û²»»á±£´æ¡£\n");
+  struct student *fuzhi = copy_student_list(*tou1);
+  sort_student_list(&fuzhi, 1, 0);
+  gong4(&fuzhi); // µ÷ÓÃ4.ÏÔÊ¾Ñ§ÉúĞÅÏ¢
+  // ÅÅĞòÍê³Éºó£¬ÊÍ·Åfuzhi
+  delete_student_list(&fuzhi);
+  // getchar();
+  getchar();
+  return 0;
+}
+
+int gong9(struct student **tou1) { // 9.°´µ¥Ïî¿ÆÄ¿ÅÅĞò
+  int kemu;
+  printf("ÅÅĞò½á¹û²»»á±£´æ¡£\n");
+  printf("\t1.BMI \t2.·Î»îÁ¿ \t3.×øÎ»ÌåÇ°Çü \t4.50mÅÜ \t5.Á¢¶¨ÌøÔ¶ "
+         "\t6.ÒıÌåÏòÉÏ \t7.1000mÅÜ\n");
+  printf("ÊäÈë¿ÆÄ¿±àºÅ(1-7): ");
+  scanf("%d", &kemu);
+  struct student *fuzhi = copy_student_list(*tou1);
+  sort_student_list(&fuzhi, 2, kemu);
+  gong4(&fuzhi); // µ÷ÓÃ4.ÏÔÊ¾Ñ§ÉúĞÅÏ¢
+  // ÅÅĞòÍê³Éºó£¬ÊÍ·Åfuzhi
+  delete_student_list(&fuzhi);
+  getchar();
+  getchar();
+  return 0;
+}
+
+int gong10(struct student **tou1) { // 10.½«Êı¾İÊä³öÎªcsvÎÄ¼ş
+  output_csv(tou1, "Ñ§Éú³É¼¨.csv");
+  printf("Êä³ö³É¹¦£¡Êı¾İ±£´æÔÚÑ§Éú³É¼¨.csvÎÄ¼şÖĞ\n");
+  getchar();
+  getchar();
+  return 0;
+}
+
+int gong11(struct student **tou1) { // 11.±£´æÊı¾İ
+  save_student_list_to_file(tou1, "students.dat");
+  printf("±£´æ³É¹¦£¡Êı¾İ±£´æÔÚstudents.datÎÄ¼şÖĞ\n");
+  getchar();
+  getchar();
+  return 0;
 }

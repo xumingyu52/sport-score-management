@@ -5,15 +5,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define PROJECT_COUNT 6
+#define PROJECT_COUNT 7
 
 struct student {
   char name[20];
-  long int school_number;
+  char school_number[20];
   char class_name[20];
   char grade[20];
-  int height;
-  int weight;
+  float height;
+  float weight;
   char sex[10];
   // 体测项目
   char project_name[PROJECT_COUNT][20];
@@ -36,9 +36,9 @@ struct student {
  * @param total_score 总成绩
  * @return struct student* 返回创建的节点指针
  */
-struct student *create_student_node(char *name, long int school_number,
-                                    char *class_name, char *grade, int height,
-                                    int weight, char *sex, int *project_score,
+struct student *create_student_node(char *name, char *school_number,
+                                    char *class_name, char *grade, float height,
+                                    float weight, char *sex, int *project_score,
                                     int total_score) {
   struct student *head = (struct student *)malloc(sizeof(struct student));
   if (head == NULL) {
@@ -46,7 +46,7 @@ struct student *create_student_node(char *name, long int school_number,
     return NULL;
   }
   strcpy(head->name, name);
-  head->school_number = school_number;
+  strcpy(head->school_number, school_number);
   strcpy(head->class_name, class_name);
   strcpy(head->grade, grade);
   head->height = height;
@@ -60,13 +60,15 @@ struct student *create_student_node(char *name, long int school_number,
   head->total_score = total_score;
 
   if (strcmp(sex, "男") == 0) {
-    const char *m_names[PROJECT_COUNT] = {"BMI",      "肺活量",   "50m跑",
-                                          "立定跳远", "引体向上", "1000m跑"};
+    const char *m_names[PROJECT_COUNT] = {"BMI",    "肺活量",   "坐位体前屈",
+                                          "50m跑",  "立定跳远", "引体向上",
+                                          "1000m跑"};
     for (int i = 0; i < PROJECT_COUNT; i++)
       strcpy(head->project_name[i], m_names[i]);
   } else {
-    const char *f_names[PROJECT_COUNT] = {"BMI",      "肺活量",   "50m跑",
-                                          "立定跳远", "仰卧起坐", "800m跑"};
+    const char *f_names[PROJECT_COUNT] = {"BMI",   "肺活量",   "坐位体前屈",
+                                          "50m跑", "立定跳远", "仰卧起坐",
+                                          "800m跑"};
     for (int i = 0; i < PROJECT_COUNT; i++)
       strcpy(head->project_name[i], f_names[i]);
   }
@@ -266,31 +268,33 @@ void modify_student_info(struct student **head_ref, char *name, int info_index,
       if (info_index == 1) {
         strcpy(current->name, new_info); // 姓名
       } else if (info_index == 2) {
-        current->school_number = atoi(new_info); // 学号
+        strcpy(current->school_number, new_info); // 学号
       } else if (info_index == 3) {
         strcpy(current->class_name, new_info); // 班级
       } else if (info_index == 4) {
         strcpy(current->grade, new_info); // 年级
       } else if (info_index == 5) {
-        current->height = atoi(new_info); // 身高
-      } else if (info_index == 6) {
-        current->weight = atoi(new_info); // 体重
-      } else if (info_index == 7) {
         strcpy(current->sex, new_info); // 性别
         // --- 修复：修改性别后同步更新项目名称 ---
         if (strcmp(current->sex, "男") == 0) {
           const char *m_names[PROJECT_COUNT] = {
-              "BMI", "肺活量", "50m跑", "立定跳远", "引体向上", "1000m跑"};
+              "BMI",      "肺活量",   "坐位体前屈", "50m跑",
+              "立定跳远", "引体向上", "1000m跑"};
           for (int i = 0; i < PROJECT_COUNT; i++)
             strcpy(current->project_name[i], m_names[i]);
         } else {
           const char *f_names[PROJECT_COUNT] = {
-              "BMI", "肺活量", "50m跑", "立定跳远", "仰卧起坐", "800m跑"};
+              "BMI",      "肺活量",   "坐位体前屈", "50m跑",
+              "立定跳远", "仰卧起坐", "800m跑"};
           for (int i = 0; i < PROJECT_COUNT; i++)
             strcpy(current->project_name[i], f_names[i]);
         }
+      } else if (info_index == 6) {
+        current->height = atof(new_info); // 身高
+      } else if (info_index == 7) {
+        current->weight = atof(new_info); // 体重
       } else if (info_index >= 8 && info_index < 8 + PROJECT_COUNT) {
-        current->project_score[info_index - 8] = atoi(new_info); // 项目成绩
+        current->project_score[info_index - 8] = atoi(new_info); // 各科目成绩
       } else if (info_index == 8 + PROJECT_COUNT) {
         current->total_score = atoi(new_info); // 总成绩
       }
@@ -365,17 +369,19 @@ void output_csv(struct student **head_ref, char *filename) {
     return;
   }
   // 写入表头
-  fprintf(file, "姓名,学号,班级,年级,身高,体重,性别,BMI,肺活量,50m跑,立定跳远,"
-                "引体向上/仰卧起坐,1000m跑/800m跑,总成绩\n");
+  fprintf(
+      file,
+      "姓名,学号,班级,年级,身高,体重,性别,BMI,肺活量,坐位体前屈,50m跑,立定跳远,"
+      "引体向上/仰卧起坐,1000m跑/800m跑,总成绩\n");
   struct student *current = *head_ref;
   while (current != NULL) {
-    fprintf(file, "%s,%ld,%s,%s,%d,%d,%s,%d,%d,%d,%d,%d,%d,%d\n", current->name,
-            current->school_number, current->class_name, current->grade,
-            current->height, current->weight, current->sex,
+    fprintf(file, "%s,%s,%s,%s,%.1f,%.1f,%s,%d,%d,%d,%d,%d,%d,%d,%d\n",
+            current->name, current->school_number, current->class_name,
+            current->grade, current->height, current->weight, current->sex,
             current->project_score[0], current->project_score[1],
             current->project_score[2], current->project_score[3],
             current->project_score[4], current->project_score[5],
-            current->total_score);
+            current->project_score[6], current->total_score);
     current = current->next;
   }
   fclose(file);
@@ -422,71 +428,106 @@ int import_from_custom_txt(struct student **head_ref, char *filename) {
   char line[256];
   int count = 0;
 
-  // 临时变量用于存放解析出的数据
-  char name[20], sex[10], grade[20], class_name[20];
-  int id, height, weight;
-  int scores[6]; // BMI, 肺活量, 50m, 立定跳, 引体/仰卧, 1000/800
-  int total_score;
+  // 临时存储变量，每次发现新学生时重置
+  char name[40] = {0}, sex[10] = {0}, grade[20] = {0}, class_name[20] = {0},
+       id[20] = {0};
+  float h_val = 0, w_val = 0, total_f = 0;
+  int scores[7] = {0};
+  int has_active = 0;
 
   while (fgets(line, sizeof(line), file)) {
-    // 1. 寻找学号（标识新学生的开始）
-    if (strstr(line, "学号：")) {
-      sscanf(strstr(line, "：") + 3, "%d", &id); // 跳过“：”读取数字
-
-      // 2. 连续读取接下来的行
-      while (fgets(line, sizeof(line), file) && !strstr(line, "————————")) {
-        if (strstr(line, "姓名："))
-          sscanf(strstr(line, "：") + 3, "%s", name);
-        else if (strstr(line, "性别："))
-          sscanf(strstr(line, "：") + strlen("："), "%s", sex);
-        else if (strstr(line, "年级："))
-          sscanf(strstr(line, "：") + strlen("："), "%s", grade);
-        else if (strstr(line, "班级："))
-          sscanf(strstr(line, "：") + strlen("："), "%s", class_name);
-        else if (strstr(line, "总分："))
-          sscanf(strstr(line, "：") + strlen("："), "%d", &total_score);
-        else if (strstr(line, "身高：")) {
-          float h;
-          sscanf(strstr(line, "：") + strlen("："), "%f", &h);
-          height = (int)h;
-        } else if (strstr(line, "体重：")) {
-          float w;
-          sscanf(strstr(line, "：") + strlen("："), "%f", &w);
-          weight = (int)w;
-        }
-
-        // 3. 提取各个科目成绩（寻找关键词并定位“分”字前面的数字）
-        char *score_pos = strstr(line, "分");
-        if (score_pos) {
-          // 往回找数字
-          char *p = score_pos - 1;
-          while (p > line && (*p >= '0' && *p <= '9'))
-            p--;
-          int val = atoi(p + 1);
-
-          if (strstr(line, "BMI"))
-            scores[0] = val;
-          else if (strstr(line, "肺活量"))
-            scores[1] = val;
-          else if (strstr(line, "50米"))
-            scores[2] = val;
-          else if (strstr(line, "立定跳远"))
-            scores[3] = val;
-          else if (strstr(line, "引体向上") || strstr(line, "仰卧起坐"))
-            scores[4] = val;
-          else if (strstr(line, "1000米") || strstr(line, "800米"))
-            scores[5] = val;
+    // 发现新的学号行：说明新学生开始
+    if (strstr(line, "学号")) {
+      // 保存上一个学生
+      if (has_active) {
+        struct student *node =
+            create_student_node(name, id, class_name, grade, h_val, w_val, sex,
+                                scores, (int)total_f);
+        if (node) {
+          insert_student_list_tail(head_ref, node);
+          count++;
         }
       }
 
-      // 4. 全部读取完后创建节点
-      struct student *new_node =
-          create_student_node(name, id, class_name, grade, height, weight, sex,
-                              scores, total_score);
-      if (new_node) {
-        insert_student_list_tail(head_ref, new_node);
-        count++;
-      }
+      // 重置变量
+      memset(name, 0, 40);
+      memset(sex, 0, 10);
+      memset(grade, 0, 20);
+      memset(class_name, 0, 20);
+      memset(id, 0, 20);
+      memset(scores, 0, sizeof(scores));
+      h_val = 0;
+      w_val = 0;
+      total_f = 0;
+      has_active = 1;
+
+      char *p = strstr(line, "：");
+      if (!p)
+        p = strchr(line, ':');
+      if (p)
+        sscanf(p + (p[0] == ':' ? 1 : 2), "%s", id);
+      continue;
+    }
+
+    if (!has_active)
+      continue;
+
+    // 解析基础属性 (不被分割线阻断)
+    char *p_colon = strstr(line, "：");
+    if (!p_colon)
+      p_colon = strchr(line, ':');
+    if (p_colon) {
+      char *data = p_colon + (p_colon[0] == ':' ? 1 : 2);
+      if (strstr(line, "姓名"))
+        sscanf(data, "%s", name);
+      else if (strstr(line, "性别"))
+        sscanf(data, "%s", sex);
+      else if (strstr(line, "年级"))
+        sscanf(data, "%s", grade);
+      else if (strstr(line, "班级"))
+        sscanf(data, "%s", class_name);
+      else if (strstr(line, "总分"))
+        sscanf(data, "%f", &total_f);
+      else if (strstr(line, "身高"))
+        sscanf(data, "%f", &h_val);
+      else if (strstr(line, "体重"))
+        sscanf(data, "%f", &w_val);
+    }
+
+    // 解析体测分数 (带有“分”字的行)
+    char *p_fen = strstr(line, "分");
+    if (p_fen) {
+      char *ptr = p_fen - 1;
+      while (ptr > line && (*ptr < '0' || *ptr > '9'))
+        ptr--; // 越过下划线
+      while (ptr > line && (*ptr >= '0' && *ptr <= '9'))
+        ptr--; // 找起始
+      int val = atoi(ptr + 1);
+
+      if (strstr(line, "BMI"))
+        scores[0] = val;
+      else if (strstr(line, "肺活量"))
+        scores[1] = val;
+      else if (strstr(line, "坐位体前屈"))
+        scores[2] = val;
+      else if (strstr(line, "50米"))
+        scores[3] = val;
+      else if (strstr(line, "立定跳远"))
+        scores[4] = val;
+      else if (strstr(line, "引体向上") || strstr(line, "仰卧起坐"))
+        scores[5] = val;
+      else if (strstr(line, "1000米") || strstr(line, "800米"))
+        scores[6] = val;
+    }
+  }
+
+  // 保存最后一名学生
+  if (has_active) {
+    struct student *node = create_student_node(
+        name, id, class_name, grade, h_val, w_val, sex, scores, (int)total_f);
+    if (node) {
+      insert_student_list_tail(head_ref, node);
+      count++;
     }
   }
 

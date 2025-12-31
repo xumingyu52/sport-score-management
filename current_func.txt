@@ -1,0 +1,86 @@
+int import_from_custom_txt(struct student **head_ref, char *filename) {
+  FILE *file = fopen(filename, "r");
+  if (file == NULL) {
+    printf("无法打开文件：%s\n", filename);
+    return 0;
+  }
+
+  char line[256];
+  int count = 0;
+
+  while (fgets(line, sizeof(line), file)) {
+    // 1. 寻找学号（标识新学生的开始）
+    if (strstr(line, "学号：")) {
+      // 初始化临时变量，防止垃圾值
+      char name[20] = {0}, sex[10] = {0}, grade[20] = {0}, class_name[20] = {0};
+      char id[20] = {0};
+      float h_val = 0, w_val = 0, total_f = 0;
+      int scores[7] = {0};
+
+      char *p_id = strstr(line, "：");
+      if (p_id)
+        sscanf(p_id + strlen("："), "%s", id);
+
+      // 2. 连续读取接下来的行直到遇到分隔符
+      while (fgets(line, sizeof(line), file) && !strstr(line, "————")) {
+        char *p_val = strstr(line, "：");
+        if (!p_val)
+          p_val = strchr(line, ':');
+
+        // A. 解析基本属性（姓名、性别、年级、班级、总分、身高、体重）
+        if (p_val) {
+          char *data_start = p_val + (p_val[0] == ':' ? 1 : 2); // 跳过冒号
+          if (strstr(line, "姓名"))
+            sscanf(data_start, "%s", name);
+          else if (strstr(line, "性别"))
+            sscanf(data_start, "%s", sex);
+          else if (strstr(line, "年级"))
+            sscanf(data_start, "%s", grade);
+          else if (strstr(line, "班级"))
+            sscanf(data_start, "%s", class_name);
+          else if (strstr(line, "总分"))
+            sscanf(data_start, "%f", &total_f);
+          else if (strstr(line, "身高"))
+            sscanf(data_start, "%f", &h_val);
+          else if (strstr(line, "体重"))
+            sscanf(data_start, "%f", &w_val);
+        }
+
+        // B. 解析体测项目分数（寻找带有“分”字的行）
+        char *p_score = strstr(line, "分");
+        if (p_score) {
+          char *p = p_score - 1;
+          while (p > line && (*p < '0' || *p > '9'))
+            p--; // 越过下划线找到数字末尾
+          while (p > line && (*p >= '0' && *p <= '9'))
+            p--; // 找到数字起始位置
+          int val = atoi(p + 1);
+
+          if (strstr(line, "BMI"))
+            scores[0] = val;
+          else if (strstr(line, "肺活量"))
+            scores[1] = val;
+          else if (strstr(line, "坐位体前屈"))
+            scores[2] = val;
+          else if (strstr(line, "50米"))
+            scores[3] = val;
+          else if (strstr(line, "立定跳远"))
+            scores[4] = val;
+          else if (strstr(line, "引体向上") || strstr(line, "仰卧起坐"))
+            scores[5] = val;
+          else if (strstr(line, "1000米") || strstr(line, "800米"))
+            scores[6] = val;
+        }
+      }
+
+      // 4. 全部读取完后创建节点
+      struct student *new_node = create_student_node(
+          name, id, class_name, grade, h_val, w_val, sex, scores, (int)total_f);
+      if (new_node) {
+        insert_student_list_tail(head_ref, new_node);
+        count++;
+      }
+    }
+  }
+
+  fclose(file);

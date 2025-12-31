@@ -113,12 +113,11 @@ int gong1(struct student **tou1) { // 1.录入学生信息
   scanf("%d", &xuanze);
   if (xuanze == 0)
     return 0;
-  if (xuanze == 1) 
-  {
+  if (xuanze == 1) {
     // 从txt中批量导入学生成绩
     int i = 0;
     printf("请输入文件名: ");
-    char filename[100];
+    char filename[1000];
     scanf("%s", filename);
     getchar();
     i = import_from_custom_txt(tou1, filename);
@@ -126,18 +125,17 @@ int gong1(struct student **tou1) { // 1.录入学生信息
       printf("未找到对应文件\n");
       getchar();
       return 0;
-    } else if (i == 1) {
+    } else if (i) {
       printf("导入成功,共导入%d条数据\n", i);
       getchar();
       return 0;
     }
-  } 
-  else if (xuanze == 2) {
+  } else if (xuanze == 2) {
     // 逐个导入学生数据
     char xingming[20], xingbie[5], banji[10], nianji[10];
     char xuehao[20];
     float shengao, tizhong;
-    int zongfen, chengji[6];
+    int zongfen, chengji[7];
     printf("请输入您想录入的学生姓名, 输入0退出: ");
     scanf("%s", xingming);
     if (strcmp(xingming, "0") == 0)
@@ -160,14 +158,16 @@ int gong1(struct student **tou1) { // 1.录入学生信息
     scanf("%d", &chengji[0]);
     printf("肺活量: ");
     scanf("%d", &chengji[1]);
-    printf("50m跑: ");
+    printf("坐位体前屈: ");
     scanf("%d", &chengji[2]);
-    printf("立定跳远: ");
+    printf("50m跑: ");
     scanf("%d", &chengji[3]);
-    printf("引体向上: ");
+    printf("立定跳远: ");
     scanf("%d", &chengji[4]);
-    printf("1000m跑: ");
+    printf("引体向上: ");
     scanf("%d", &chengji[5]);
+    printf("1000m跑: ");
+    scanf("%d", &chengji[6]);
     struct student *node =
         create_student_node(xingming, xuehao, banji, nianji, shengao, tizhong,
                             xingbie, chengji, zongfen);
@@ -209,12 +209,14 @@ int gong3(struct student **tou1) { // 3.查询学生信息
   if (res) {
     // 将信息全部输出
     printf("姓名: %s\n 学号: %s\n 班级: %s\n 年级: %s\n 身高: %.1f\n 体重: "
-           "%.1f\n 性别: %s\n BMI: %d\n 肺活量: %d\n 50m跑: %d\n 立定跳远: "
+           "%.1f\n 性别: %s\n BMI: %d\n 肺活量: %d\n 坐位体前屈: %d\n 50m跑: "
+           "%d\n 立定跳远: "
            "%d\n 引体向上: %d\n 1000m跑: %d\n 总分: %d\n",
            res->name, res->school_number, res->class_name, res->grade,
            res->height, res->weight, res->sex, res->project_score[0],
            res->project_score[1], res->project_score[2], res->project_score[3],
-           res->project_score[4], res->project_score[5], res->total_score);
+           res->project_score[4], res->project_score[5], res->project_score[6],
+           res->total_score);
   } else {
     printf("未找到该学生\n");
   }
@@ -229,18 +231,20 @@ void gong4(struct student **head) { // 4.显示学生信息
     return;
   }
   struct student *curr = *head;
-  printf("%-10s %-13s %-12s %-12s %-8s %-8s %-6s %-6s %-8s %-8s %-10s %-10s "
-         "%-10s %-8s\n",
-         "姓名", "学号", "班级", "年级", "身高", "体重", "性别", "BMI",
-         "肺活量", "50m跑", "立定跳远", "引体向上", "1000m跑", "总分");
+  printf(
+      "%-10s %-13s %-12s %-12s %-8s %-8s %-6s %-6s %-8s %-10s %-8s %-10s %-10s "
+      "%-10s %-8s\n",
+      "姓名", "学号", "班级", "年级", "身高", "体重", "性别", "BMI", "肺活量",
+      "坐位体前屈", "50m跑", "立定跳远", "引体向上", "1000m跑", "总分");
   while (curr) {
-    printf("%-10s %-13s %-12s %-12s %-8.1f %-8.1f %-6s %-6d %-8d %-8d %-10d "
-           "%-10d %-10d %-8d\n",
-           curr->name, curr->school_number, curr->class_name, curr->grade,
-           curr->height, curr->weight, curr->sex, curr->project_score[0],
-           curr->project_score[1], curr->project_score[2],
-           curr->project_score[3], curr->project_score[4],
-           curr->project_score[5], curr->total_score);
+    printf(
+        "%-10s %-13s %-12s %-12s %-8.1f %-8.1f %-6s %-6d %-8d %-10d %-8d %-10d "
+        "%-10d %-10d %-8d\n",
+        curr->name, curr->school_number, curr->class_name, curr->grade,
+        curr->height, curr->weight, curr->sex, curr->project_score[0],
+        curr->project_score[1], curr->project_score[2], curr->project_score[3],
+        curr->project_score[4], curr->project_score[5], curr->project_score[6],
+        curr->total_score);
     curr = curr->next;
   }
   getchar();
@@ -261,12 +265,13 @@ int gong5(struct student **tou1) { // 5.修改学生成绩
   printf("7.体重\n");
   printf("8.BMI\n");
   printf("9.肺活量\n");
-  printf("10.50m跑\n");
-  printf("11.立定跳远\n");
-  printf("12.引体向上\n");
-  printf("13.1000m跑\n");
-  printf("14.总分\n");
-  printf("修改项编号(1-14): ");
+  printf("10.坐位体前屈\n");
+  printf("11.50m跑\n");
+  printf("12.立定跳远\n");
+  printf("13.引体向上\n");
+  printf("14.1000m跑\n");
+  printf("15.总分\n");
+  printf("修改项编号(1-15): ");
   scanf("%d", &haoma);
   printf("新值: ");
   scanf("%s", xin);
@@ -292,9 +297,9 @@ int gong8(struct student **tou1) { // 8.按总分排序
 int gong9(struct student **tou1) { // 9.按单项科目排序
   int kemu;
   printf("排序结果不会保存。\n");
-  printf(
-      "\t1.BMI \t2.肺活量 \t3.50m跑 \t4.立定跳远 \t5.引体向上 \t6.1000m跑\n");
-  printf("输入科目编号(1-6): ");
+  printf("\t1.BMI \t2.肺活量 \t3.坐位体前屈 \t4.50m跑 \t5.立定跳远 "
+         "\t6.引体向上 \t7.1000m跑\n");
+  printf("输入科目编号(1-7): ");
   scanf("%d", &kemu);
   struct student *fuzhi = copy_student_list(*tou1);
   sort_student_list(&fuzhi, 2, kemu);

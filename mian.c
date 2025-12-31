@@ -229,12 +229,12 @@ void gong4(struct student **head) { // 4.显示学生信息
     return;
   }
   struct student *curr = *head;
-  printf("%-10s %-16s %-12s %-12s %-8s %-8s %-6s %-6s %-8s %-8s %-10s %-10s "
+  printf("%-10s %-13s %-12s %-12s %-8s %-8s %-6s %-6s %-8s %-8s %-10s %-10s "
          "%-10s %-8s\n",
          "姓名", "学号", "班级", "年级", "身高", "体重", "性别", "BMI",
          "肺活量", "50m跑", "立定跳远", "引体向上", "1000m跑", "总分");
   while (curr) {
-    printf("%-10s %-16s %-12s %-12s %-8.1f %-8.1f %-6s %-6d %-8d %-8d %-10d "
+    printf("%-10s %-13s %-12s %-12s %-8.1f %-8.1f %-6s %-6d %-8d %-8d %-10d "
            "%-10d %-10d %-8d\n",
            curr->name, curr->school_number, curr->class_name, curr->grade,
            curr->height, curr->weight, curr->sex, curr->project_score[0],
@@ -309,7 +309,7 @@ int gong9(struct student **tou1) { // 9.按单项科目排序
 int gong10(struct student **tou1) { // 10.将数据输出为csv文件
   output_csv(tou1, "学生成绩.csv");
   printf("输出成功！数据保存在学生成绩.csv文件中\n");
-  // getchar();
+  getchar();
   getchar();
   return 0;
 }
@@ -317,7 +317,7 @@ int gong10(struct student **tou1) { // 10.将数据输出为csv文件
 int gong11(struct student **tou1) { // 11.保存数据
   save_student_list_to_file(tou1, "students.dat");
   printf("保存成功！数据保存在students.dat文件中\n");
-  // getchar();
+  getchar();
   getchar();
   return 0;
 }

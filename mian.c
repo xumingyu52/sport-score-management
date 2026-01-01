@@ -341,7 +341,7 @@ int gong12(struct student **tou1) { // 12.计算平均分
     getchar();
     return 0;
   }
-  int sum[PROJECT_COUNT] = {0};
+  //int sum[PROJECT_COUNT] = {0};
   int count = 0;
   int all_total = 0;
   struct student *current = *tou1;
@@ -351,7 +351,7 @@ int gong12(struct student **tou1) { // 12.计算平均分
     all_total += current->total_score;
     current = current->next;
   }
-  int average_total_score;
+  float average_total_score;
   average_total_score = (float)all_total / count;
   printf("总分平均分: %.2f\n", average_total_score);
   getchar();

@@ -278,6 +278,11 @@ int gong5(struct student **tou1) { // 5.修改学生成绩
   printf("15.总分\n");
   printf("修改项编号(1-15): ");
   scanf("%d", &haoma);
+  //异常输入检测
+  if (haoma < 1 || haoma > 15) {
+    printf("输入错误，请重新输入\n");
+    return 0;
+  }
   printf("新值: ");
   scanf("%s", xin);
   modify_student_info(tou1, xingming, haoma, xin);

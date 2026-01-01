@@ -15,6 +15,7 @@ int gong9(struct student **tou1);  // 9.按单项科目排序
 int gong10(struct student **tou1); // 10.将数据输出为csv文件
 int gong11(struct student **tou1); // 11.保存数据
 int gong12(struct student **tou1); // 12.计算平均分
+void gong13(struct student **head, int kemu); // 13.显示特定科目的学生分数
 
 // int main() {
 //     int chengji[7] = {81, 82, 83, 84, 85, 86};
@@ -307,7 +308,7 @@ int gong9(struct student **tou1) { // 9.按单项科目排序
   scanf("%d", &kemu);
   struct student *fuzhi = copy_student_list(*tou1);
   sort_student_list(&fuzhi, 2, kemu);
-  gong4(&fuzhi); // 调用4.显示学生信息
+  gong13(&fuzhi, kemu); // 调用13.显示特定科目的学生分数
   // 排序完成后，释放fuzhi
   delete_student_list(&fuzhi);
   getchar();
@@ -357,4 +358,24 @@ int gong12(struct student **tou1) { // 12.计算平均分
   getchar();
   getchar();
   return 0;
+}
+
+/**
+ * @brief 显示特定科目的学生分数或者 总分
+ * 
+ * @param head 
+ * @param kemu 0表示总分，1-7表示特定科目
+ */
+void gong13(struct student **head, int kemu) 
+{ // 13.显示特定科目的学生分数或者 总分
+  struct student *current = *head;
+  while (current != NULL) 
+  {
+    if (kemu == 0) {
+      printf("%s: %d\n", current->name, current->total_score);
+    } else {
+      printf("%s: %d\n", current->name, current->project_score[kemu-1]);
+    }
+    current = current->next;
+  }
 }

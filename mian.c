@@ -14,6 +14,7 @@ int gong8(struct student **tou1);  // 8.按总分排序
 int gong9(struct student **tou1);  // 9.按单项科目排序
 int gong10(struct student **tou1); // 10.将数据输出为csv文件
 int gong11(struct student **tou1); // 11.保存数据
+int gong12(struct student **tou1); // 12.计算平均分
 
 // int main() {
 //     int chengji[7] = {81, 82, 83, 84, 85, 86};
@@ -64,6 +65,8 @@ int main() {
       gong10(&tou1);
     } else if (xuanze == 11) {
       gong11(&tou1);
+    } else if (xuanze == 12) {
+      gong12(&tou1);
     } else {
       printf("输入的指令无效\n");
     }
@@ -96,6 +99,7 @@ int xitong() {
       "-----------------9.按单项成绩高低排序-------------------------------\n");
   printf("-----------------10.将数据输出为csv文件-------------------------\n");
   printf("-----------------11.保存数据--------------------------------\n");
+  printf("-----------------12.计算总分平均分-------------------------\n");
   printf("-----------------0.退出系统-------------------------\n");
   printf("请输入相应的数字以使用相应的功能: ");
   scanf("%d", &xuanze);
@@ -322,6 +326,34 @@ int gong10(struct student **tou1) { // 10.将数据输出为csv文件
 int gong11(struct student **tou1) { // 11.保存数据
   save_student_list_to_file(tou1, "students.dat");
   printf("保存成功！数据保存在students.dat文件中\n");
+  getchar();
+  getchar();
+  return 0;
+}
+
+/***
+ * @brief 计算总分平均分
+ */
+int gong12(struct student **tou1) { // 12.计算平均分
+  if (*tou1 == NULL) {
+    printf("空列表，无法计算平均分\n");
+    getchar();
+    getchar();
+    return 0;
+  }
+  int sum[PROJECT_COUNT] = {0};
+  int count = 0;
+  int all_total = 0;
+  struct student *current = *tou1;
+  while (current != NULL) 
+  {
+    count ++;
+    all_total += current->total_score;
+    current = current->next;
+  }
+  int average_total_score;
+  average_total_score = (float)all_total / count;
+  printf("总分平均分: %.2f\n", average_total_score);
   getchar();
   getchar();
   return 0;

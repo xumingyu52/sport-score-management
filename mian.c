@@ -5,8 +5,8 @@
 
 int xitong();
 int xitong_xiao();
-int gong1(struct student **tou1);  // 2.删除学生
-int gong2(struct student **tou1);  // 2.导入学生信息
+int gong1(struct student **tou1);  // 1.录入学生信息
+int gong2(struct student **tou1);  // 2.删除学生信息
 int gong3(struct student **tou1);  // 3.查询学生信息
 void gong4(struct student **head); // 4.显示学生信息
 int gong5(struct student **tou1);  // 5.修改学生信息

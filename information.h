@@ -154,7 +154,7 @@ void delete_student_list_node(struct student **head_ref, int position) {
   for (int i = 1; i < position - 1 && current->next != NULL; i++) {
     current = current->next;
   }
-  if (current->next == NULL) {
+  if (current->next == NULL) {  //处理输入的位置超过链表长度的情况
     return;
   }
   struct student *temp = current->next;
@@ -399,7 +399,7 @@ struct student *copy_student_list(struct student *head_ref) {
   while (current != NULL) {
     // 必须为新节点分配内存
     struct student *new_node = (struct student *)malloc(sizeof(struct student));
-    if (new_node == NULL)
+    if (new_node == NULL) //若某一步内存分配失败，放回已分配的链表，保留已经复制的部分
       return new_head;
 
     // 拷贝内容
@@ -433,22 +433,22 @@ int import_from_custom_txt(struct student **head_ref, char *filename) {
        id[20] = {0};
   float h_val = 0, w_val = 0, total_f = 0;
   int scores[7] = {0};
-  int has_active = 0;
+  int has_active = 0;  //一开始不保存
 
-  while (fgets(line, sizeof(line), file)) {
+  while (fgets(line, sizeof(line), file)) { //fgets读取到换行符时结束，一行一行循环读取
     // 发现新的学号行：说明新学生开始
     if (strstr(line, "学号")) {
       // 保存上一个学生
-      if (has_active) {
+      if (has_active) { //异步存储
         struct student *node =
             create_student_node(name, id, class_name, grade, h_val, w_val, sex,
                                 scores, (int)total_f);
-        if (node) {
+        if (node) { //如果分配内存成功
           insert_student_list_tail(head_ref, node);
           count++;
         }
       }
-
+      //保存好上一个学生之后准备下一个录入
       // 重置变量
       memset(name, 0, 40);
       memset(sex, 0, 10);
@@ -459,17 +459,18 @@ int import_from_custom_txt(struct student **head_ref, char *filename) {
       h_val = 0;
       w_val = 0;
       total_f = 0;
-      has_active = 1;
+      has_active = 1; //标记为开始处理一个学生的数据
 
-      char *p = strstr(line, "：");
-      if (!p)
+      char *p = strstr(line, "："); //str返回该位置的指针
+      if (!p) //可能是英文冒号
         p = strchr(line, ':');
-      if (p)
-        sscanf(p + (p[0] == ':' ? 1 : 2), "%s", id);
+      if (p) //找到了第一行的冒号
+        sscanf(p + (p[0] == ':' ? 1 : 2), "%s", id);  
+        //sscanf从字符串中格式化读取 如果是英文冒号，下一位即学号，中文则要加2（___）
       continue;
     }
 
-    if (!has_active)
+    if (!has_active) //当没有正在处理的学生数据时跳过剩下的文本解析代码防止误读
       continue;
 
     // 解析基础属性 (不被分割线阻断)
@@ -477,7 +478,7 @@ int import_from_custom_txt(struct student **head_ref, char *filename) {
     if (!p_colon)
       p_colon = strchr(line, ':');
     if (p_colon) {
-      char *data = p_colon + (p_colon[0] == ':' ? 1 : 2);
+      char *data = p_colon + (p_colon[0] == ':' ? 1 : 2); //字符串读写位置移到冒号后
       if (strstr(line, "姓名"))
         sscanf(data, "%s", name);
       else if (strstr(line, "性别"))
@@ -496,13 +497,14 @@ int import_from_custom_txt(struct student **head_ref, char *filename) {
 
     // 解析体测分数 (带有“分”字的行)
     char *p_fen = strstr(line, "分");
-    if (p_fen) {
+    if (p_fen) {  //每次读取前都必须保证找到了关键字
       char *ptr = p_fen - 1;
-      while (ptr > line && (*ptr < '0' || *ptr > '9'))
+      while (ptr > line && (*ptr < '0' || *ptr > '9')) //line为字符串首，往前一直到找到一个数字停止
         ptr--; // 越过下划线
-      while (ptr > line && (*ptr >= '0' && *ptr <= '9'))
+      while (ptr > line && (*ptr >= '0' && *ptr <= '9')) //此时ptr应为一个数字字符，可以进行数字范围的判断了
         ptr--; // 找起始
-      int val = atoi(ptr + 1);
+      //循环最后ptr到了非数字字符
+      int val = atoi(ptr + 1); //atoi会遇到第一个非数字时停止，完成所有数读取
 
       if (strstr(line, "BMI"))
         scores[0] = val;

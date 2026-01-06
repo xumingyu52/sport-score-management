@@ -337,10 +337,9 @@ struct student *load_student_list_from_file(char *filename) {
 
   // 新的头节点
   struct student *head = NULL;
-  struct student temp; // 这是一个临时挡箭牌，用来接住从硬盘读出来的东西
+  struct student temp;
   while (fread(&temp, sizeof(struct student), 1, file) == 1) {
-    // 关键区别在这里！！
-    // 每读到一个学生，我们就给他造一个新的“身体”（分配新内存）
+
     struct student *new_node = (struct student *)malloc(sizeof(struct student));
 
     // 把读到的数据拷贝过去
